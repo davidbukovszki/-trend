@@ -1,0 +1,2066 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Étrend</title>
+<meta name="description" content="Heti longevity étrend – választás, bevásárlólista, főzés mód">
+<meta name="theme-color" content="#f5f3ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101311" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Étrend">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+<style>
+:root{
+  --bg:#f5f3ee;--surface:#ffffff;--surface2:#eeebe3;--text:#1c211e;--muted:#68706a;--line:#e1ddd3;
+  --accent:#2f6b4f;--accent-ink:#ffffff;--accent-soft:#e0ece4;--star:#b97f00;--star-soft:#fbf0d4;
+  --warn:#b4501a;--warn-soft:#fbe8da;--ok:#2f7a4a;--band:rgba(47,107,79,.18);
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 3px 10px rgba(0,0,0,.04);
+  --r:14px;--tabh:62px;
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+  --sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#101311;--surface:#191e1b;--surface2:#232a25;--text:#e7ebe8;--muted:#9ba59e;--line:#2d3530;
+  --accent:#6fc293;--accent-ink:#0c1a12;--accent-soft:#1f3529;--star:#f2b632;--star-soft:#3a2f14;
+  --warn:#f0904f;--warn-soft:#3b2416;--ok:#6fc293;--band:rgba(111,194,147,.2);
+  --shadow:0 1px 2px rgba(0,0,0,.4);color-scheme:dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101311;--surface:#191e1b;--surface2:#232a25;--text:#e7ebe8;--muted:#9ba59e;--line:#2d3530;
+    --accent:#6fc293;--accent-ink:#0c1a12;--accent-soft:#1f3529;--star:#f2b632;--star-soft:#3a2f14;
+    --warn:#f0904f;--warn-soft:#3b2416;--ok:#6fc293;--band:rgba(111,194,147,.2);
+    --shadow:0 1px 2px rgba(0,0,0,.4);color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+a{color:var(--accent)}
+h1,h2,h3{margin:0;line-height:1.2}
+[hidden]{display:none!important}
+.top{position:sticky;top:0;z-index:20;background:var(--bg);padding:calc(10px + var(--sat)) calc(16px + var(--sar)) 10px calc(16px + var(--sal));border-bottom:1px solid var(--line)}
+.top h1{font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.top .sub{color:var(--muted);font-size:13px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--surface2);color:var(--muted)}
+main{padding:12px calc(16px + var(--sar)) calc(var(--tabh) + var(--sab) + 70px) calc(16px + var(--sal));max-width:720px;margin:0 auto}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:0 var(--sar) var(--sab) var(--sal)}
+.tabbar button{flex:1;height:var(--tabh);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;color:var(--muted);position:relative}
+.tabbar button .ic{font-size:21px;line-height:1}
+.tabbar button[aria-selected="true"]{color:var(--accent);font-weight:600}
+.tabbar .badge{position:absolute;top:7px;left:calc(50% + 8px);min-width:17px;height:17px;border-radius:9px;background:var(--accent);color:var(--accent-ink);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--line);margin:0 0 10px}
+.pad{padding:14px}
+.sec-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 2px 8px;display:flex;align-items:center;gap:8px}
+.sec-title .r{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.row{display:flex;align-items:center;gap:8px}
+.wrap{flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px 14px;border-radius:11px;background:var(--surface2);font-weight:600;font-size:14px;border:1px solid var(--line)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn.ghost{background:transparent}
+.btn.sm{min-height:34px;padding:5px 10px;font-size:13px;border-radius:9px}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.btn.danger{color:var(--warn)}
+.btn:disabled{opacity:.45}
+.seg{display:flex;background:var(--surface2);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;min-height:36px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0}
+.days button{border-radius:12px;padding:7px 0 6px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--muted);position:relative}
+.days button b{font-size:16px;color:var(--text)}
+.days button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.days button[aria-pressed="true"] b{color:var(--accent-ink)}
+.days .tick{position:absolute;top:-5px;right:-3px;width:17px;height:17px;border-radius:50%;background:var(--ok);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+.days .today::after{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;margin-top:2px}
+.gauge{margin:8px 0 2px}
+.gauge .lbl{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.track{position:relative;height:10px;border-radius:6px;background:var(--surface2);overflow:hidden}
+.track .band{position:absolute;top:0;bottom:0;background:var(--band)}
+.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--accent)}
+.track .fill.low{background:var(--warn)}
+.warnbox{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:8px 10px;font-size:13px;margin-top:8px}
+.mealhead{display:flex;align-items:baseline;gap:8px;margin:18px 2px 8px}
+.mealhead h2{font-size:17px}
+.mealhead .s{font-size:12px;color:var(--muted);margin-left:auto;text-align:right;max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meal{overflow:hidden}
+.meal.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset,var(--shadow)}
+.meal.rec{}
+.mh{display:block;width:100%;text-align:left;padding:12px 14px}
+.mh .t{display:flex;gap:8px;align-items:flex-start}
+.mh .nm{font-weight:650;font-size:16px;flex:1;min-width:0}
+.mh .star{color:var(--star)}
+.mh .chev{color:var(--muted);transition:transform .2s;font-size:14px;margin-top:2px}
+.meal.open .chev{transform:rotate(180deg)}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:3px;font-size:12px;padding:2px 7px;border-radius:7px;background:var(--surface2);color:var(--muted);white-space:nowrap}
+.chip.strong{color:var(--text);font-weight:600}
+.selmark{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:13px;font-weight:700;flex:none}
+.nova{color:#fff;font-weight:700;font-size:11px;padding:2px 6px;border-radius:6px}
+.nova1{background:#2e7d32}.nova2{background:#7cb342}.nova3{background:#ef8c00}.nova4{background:#d32f2f}
+.ns{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;color:#fff;font-weight:800;font-size:12px}
+.ns.B,.ns.C{color:#1c211e}
+.mb{padding:0 14px 14px;border-top:1px solid var(--line)}
+.why{margin:12px 0 10px;font-size:15px}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px}
+.fact{background:var(--surface2);border-radius:10px;padding:7px 10px;font-size:13px}
+.fact b{display:block;font-size:15px}
+.mb h4{margin:14px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.ing{list-style:none;margin:0;padding:0}
+.ing li{display:flex;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.ing li:last-child{border-bottom:0}
+.ing .q{margin-left:auto;color:var(--muted);white-space:nowrap}
+.steps{margin:0;padding-left:22px}
+.steps li{margin:6px 0;font-size:15px}
+.steps .pm{color:var(--accent);font-weight:600;font-size:13px;white-space:nowrap}
+.link{display:block;margin-top:10px;font-size:14px;word-break:break-word}
+.actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.rate{display:flex;gap:6px;margin-top:8px}
+.rate button{flex:1;min-height:36px;border-radius:9px;background:var(--surface2);font-size:13px;border:1px solid var(--line)}
+.rate button.on{background:var(--accent-soft);border-color:var(--accent)}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none;margin:0 -16px;padding-left:16px;padding-right:16px}
+.filters::-webkit-scrollbar{display:none}
+.fchip{flex:none;padding:6px 11px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.fchip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.selrow{display:flex;gap:8px;margin:4px 0 6px}
+.selrow label{flex:1;font-size:12px;color:var(--muted)}
+.selrow select{display:block;width:100%;margin-top:3px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:16px}
+.prep .ph{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;text-align:left}
+.prep ol{list-style:none;margin:0;padding:0 14px 12px}
+.prep li{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.cb{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;color:transparent;background:var(--surface)}
+.cb.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.done-txt{text-decoration:line-through;color:var(--muted)}
+.notes{margin:0;padding:12px 14px 12px 32px}
+.notes li{margin:3px 0;font-size:14px}
+.shop-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line)}
+.shop-row:first-of-type{border-top:0}
+.shop-row .nm{font-weight:600}
+.shop-row .src{font-size:12px;color:var(--muted);margin-top:1px}
+.shop-row .qty{color:var(--muted);font-weight:500;margin-left:4px}
+.iconbtn{flex:none;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--surface2);font-size:17px}
+.cat-h{padding:10px 12px 4px;font-size:13px;font-weight:700;color:var(--muted)}
+.empty{text-align:center;padding:28px 18px}
+.empty .big{font-size:40px}
+.stat{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+.stat:first-child{border-top:0}
+.stat .v{font-size:22px;font-weight:750;min-width:66px}
+.plantlist{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 12px}
+.kchip{display:inline-flex;align-items:center;gap:6px;padding:5px 6px 5px 11px;border-radius:99px;background:var(--surface2);font-size:14px;margin:0 6px 6px 0}
+.kchip button{width:22px;height:22px;border-radius:50%;background:var(--surface);font-size:12px}
+textarea.paste,textarea.copybox{width:100%;min-height:120px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);padding:10px;font:13px/1.4 ui-monospace,Menlo,monospace;resize:vertical}
+input.num{width:130px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);font-size:16px}
+.field{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
+.field:first-child{border-top:0}
+.overlay{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column}
+.sheetwrap{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:720px;max-height:88vh;border-radius:18px 18px 0 0;display:flex;flex-direction:column;padding-bottom:var(--sab)}
+.sheet-h{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.sheet-h h2{font-size:17px;flex:1}
+.sheet-b{overflow-y:auto;padding:12px 16px 18px;-webkit-overflow-scrolling:touch}
+.swapitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line)}
+.swapitem:first-child{border-top:0}
+.cook-h{display:flex;align-items:center;gap:10px;padding:calc(10px + var(--sat)) calc(16px + var(--sar)) 10px calc(16px + var(--sal))}
+.cook-h h2{flex:1;font-size:17px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog{height:6px;background:var(--surface2);margin:0 16px;border-radius:4px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.cook-b{flex:1;overflow-y:auto;padding:18px calc(20px + var(--sar)) 18px calc(20px + var(--sal))}
+.stepno{color:var(--muted);font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.steptxt{font-size:clamp(23px,6.2vw,32px);line-height:1.35;font-weight:560;margin:10px 0 18px}
+.timerbtn{min-height:52px;font-size:17px;width:100%}
+.cook-f{display:flex;gap:10px;padding:10px calc(16px + var(--sar)) calc(12px + var(--sab)) calc(16px + var(--sal));border-top:1px solid var(--line);background:var(--bg)}
+.cook-f .btn{flex:1;min-height:56px;font-size:17px}
+.tlist{display:flex;flex-direction:column;gap:6px;margin:14px 0}
+.titem{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.titem .tt{font-variant-numeric:tabular-nums;font-weight:750;font-size:20px;min-width:72px}
+.titem.done{background:var(--warn-soft);border-color:var(--warn);animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.65}}
+#timerbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabh) + var(--sab) + 10px);z-index:35;display:flex;gap:6px}
+#timerbar button{background:var(--text);color:var(--bg);padding:8px 14px;border-radius:99px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#timerbar button.done{background:var(--warn);color:#fff;animation:pulse 1s infinite}
+#toasts{position:fixed;left:0;right:0;bottom:calc(var(--tabh) + var(--sab) + 60px);z-index:80;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;padding:0 16px}
+.toast{background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:600;max-width:440px;box-shadow:0 6px 20px rgba(0,0,0,.25);animation:tin .2s ease-out}
+.toast.alarm{background:var(--warn);color:#fff;font-size:16px}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}}
+.bar2{height:8px;background:var(--surface2);border-radius:5px;overflow:hidden;margin-top:6px}
+.bar2 i{display:block;height:100%;background:var(--accent)}
+.bar2 i.over{background:var(--warn)}
+.groupname{font-size:15px;font-weight:700;margin:18px 2px 8px;display:flex;gap:8px;align-items:baseline}
+.groupname .c{color:var(--muted);font-weight:500;font-size:13px}
+.ver{text-align:center;color:var(--muted);font-size:12px;margin-top:20px}
+@media (min-width:600px){.facts{grid-template-columns:repeat(4,1fr)}}
+/* ---- Claude AI ---- */
+:root{--ai:#b4532a;--ai-ink:#ffffff;--ai-soft:#f8e7dd}
+:root[data-theme="dark"]{--ai:#ec9a72;--ai-ink:#1d0f08;--ai-soft:#3b241a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ai:#ec9a72;--ai-ink:#1d0f08;--ai-soft:#3b241a}}
+.btn.ai{background:var(--ai);color:var(--ai-ink);border-color:transparent}
+.btn.ai-o{background:var(--ai-soft);color:var(--ai);border-color:transparent}
+.aibox,.aibanner,.jobcard{border-color:var(--ai);box-shadow:0 0 0 1px var(--ai) inset,var(--shadow)}
+.chip.ai-chip{background:var(--ai-soft);color:var(--ai);font-weight:600}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .8s linear infinite;vertical-align:-2px;flex:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+.txt{width:100%;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--surface2);font-size:16px}
+.txt.short{width:150px;text-align:right}
+textarea.txt{resize:vertical;line-height:1.4}
+.field.col{flex-direction:column;align-items:stretch}
+.lbl{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:14px 0 6px}
+.note{font-size:13px;color:var(--muted);margin-top:12px;background:var(--surface2);border-radius:10px;padding:9px 11px}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14px}
+.check input{width:20px;height:20px;margin:0;flex:none;accent-color:var(--ai)}
+.steprow{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:8px 0 4px}
+.steprow b{color:var(--text)}
+.bar2 i.jobbar{background:var(--ai);transition:width .3s}
+.bubble{padding:10px 12px;border-radius:14px;margin:8px 0;max-width:88%;font-size:15px;line-height:1.45;width:fit-content}
+.bubble.me{background:var(--accent);color:var(--accent-ink);margin-left:auto;border-bottom-right-radius:4px}
+.bubble.bot{background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.tips{margin:0;padding-left:20px}.tips li{margin:4px 0;font-size:14px}
+details.field summary{cursor:pointer;font-weight:600;padding:2px 0}
+.ai-actions{margin-top:8px}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1><span>🥗 Étrend</span><span id="demoBadge" class="pill" hidden>DEMO</span></h1>
+  <div class="sub" id="sub">Nincs betöltött terv</div>
+</header>
+
+<main>
+  <section id="tab-het"></section>
+  <section id="tab-bev" hidden></section>
+  <section id="tab-snack" hidden></section>
+  <section id="tab-tobb" hidden></section>
+</main>
+
+<div id="timerbar" hidden></div>
+<div id="toasts" aria-live="polite"></div>
+
+<nav class="tabbar" role="tablist">
+  <button role="tab" data-act="tab" data-id="het" aria-selected="true"><span class="ic">📅</span>Hét</button>
+  <button role="tab" data-act="tab" data-id="bev" aria-selected="false"><span class="ic">🛒</span>Bevásárlás<span class="badge" id="shopBadge" hidden></span></button>
+  <button role="tab" data-act="tab" data-id="snack" aria-selected="false"><span class="ic">🥜</span>Snackek</button>
+  <button role="tab" data-act="tab" data-id="tobb" aria-selected="false"><span class="ic">⚙️</span>Több</button>
+</nav>
+
+<div id="cook" class="overlay" hidden role="dialog" aria-modal="true" aria-label="Főzés mód"></div>
+<div id="sheet" class="sheetwrap" hidden role="dialog" aria-modal="true"></div>
+
+<input type="file" id="fileInput" accept=".json,application/json,text/plain" hidden>
+<input type="file" id="restoreInput" accept=".json,application/json,text/plain" hidden>
+
+<script>
+'use strict';
+const APP_VERSION = '2.0.0';
+const P = 'etrend.';
+const DAYS = [['hetfo','Hétfő','H'],['kedd','Kedd','K'],['szerda','Szerda','Sze'],['csutortok','Csütörtök','Cs'],['pentek','Péntek','P'],['szombat','Szombat','Szo'],['vasarnap','Vasárnap','V']];
+const MEALS = [['reggeli','Reggeli'],['ebed','Ebéd'],['vacsora','Vacsora']];
+const DIFF = {konnyu:'Könnyű', kozepes:'Közepes', osszetett:'Összetett'};
+const CATS = [['zoldseg','Zöldség-gyümölcs'],['feherje','Hús/hal/tojás'],['tejtermek','Tejtermék/fermentált'],['gabona','Gabona/hüvelyes'],['egyeb','Egyéb']];
+const NS_COL = {A:'#038141',B:'#85BB2F',C:'#FECB02',D:'#EE8100',E:'#E63E11'};
+const RATE = {like:['👍','Ízlett'], dislike:['👎','Nem ízlett'], complex:['😵','Túl bonyolult']};
+const FILTERS = [['konnyu','Könnyű'],['kozepes','Közepes'],['osszetett','Összetett'],['ajanlott','⭐ Ajánlott'],['fermentalt','🦠 Fermentált'],['maradek','🔁 Maradék'],['futo','🏃 Futónap'],['gyors','≤30 perc'],['valasztott','✓ Választott']];
+const GROUPS = [['nap','Nap'],['nehezseg','Nehézség'],['feherjeforras','Fehérjeforrás'],['konyha','Konyha'],['alapanyag','Közös alapanyag'],['nova','NOVA']];
+const SORTS = [['alap','Alap'],['feherje','Fehérje ↓'],['ido','Idő ↑'],['kcal','kcal ↑']];
+
+/* ---------- tárolás ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(P+k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(P+k, JSON.stringify(v)); }catch(e){ toast('Nem sikerült menteni (tele a tárhely?)'); } },
+  del(k){ try{ localStorage.removeItem(P+k); }catch(e){} },
+  keys(){ const r=[]; try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k && k.startsWith(P)) r.push(k); } }catch(e){} return r; }
+};
+
+let plan = store.get('plan', null);
+let sel = store.get('sel', null);
+let checks = store.get('checks', null);
+let pantry = store.get('pantry', []);
+let ratings = store.get('ratings', {});
+let history = store.get('history', []);
+let settings = Object.assign({fo:2, keret:75000, tema:'auto'}, store.get('settings', {}));
+let ui = Object.assign({tab:'het', view:'napok', open:[], filters:[], group:'nap', sort:'alap', prepOpen:false, plantsOpen:false}, store.get('ui', {}));
+ui.day = null;
+let MI = {};          // id -> étel/snack
+let timers = [];      // {id,label,end,done}
+let cook = null;      // {id, step}
+let wakeLock = null;
+let audioCtx = null;
+
+/* ---------- segédek ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const strip = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();
+const num = v => { if(v == null || v === '') return null; const n = typeof v === 'number' ? v : parseFloat(String(v).replace(',', '.')); return Number.isFinite(n) ? n : null; };
+const bool = v => v === true || /^(true|igen|yes|1)$/i.test(String(v ?? '').trim());
+const fmtFt = n => Math.round(n || 0).toLocaleString('hu-HU') + ' Ft';
+const round1 = n => Math.round(n*10)/10;
+function fmtQty(n, unit){
+  if(n == null) return unit || '';
+  let v;
+  if(n >= 100) v = Math.round(n);
+  else if(n >= 10) v = Math.round(n*2)/2;
+  else v = round1(n);
+  return String(v).replace('.', ',') + (unit ? ' ' + unit : '');
+}
+function saveUI(){ const {day, ...rest} = ui; store.set('ui', rest); }
+function weekKeyOf(p){ return p ? (p.ev + '-W' + String(p.het).padStart(2,'0')) : null; }
+function isoWeek(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(),0,1));
+  return {ev: t.getUTCFullYear(), het: Math.ceil(((t - y0)/86400000 + 1)/7)};
+}
+function todayDay(){ return DAYS[(new Date().getDay() + 6) % 7][0]; }
+function dayDate(idx){
+  if(!plan || !plan.kezdo_datum) return null;
+  const d = new Date(plan.kezdo_datum + 'T12:00:00');
+  if(isNaN(d)) return null;
+  d.setDate(d.getDate() + idx); return d;
+}
+function dayName(id){ const d = DAYS.find(x => x[0] === id); return d ? d[1] : 'Tartalék'; }
+function mealName(id){ const m = MEALS.find(x => x[0] === id); return m ? m[1] : ''; }
+
+/* ---------- normalizálás (ékezettűrő) ---------- */
+function normKeys(o){
+  if(!o || typeof o !== 'object' || Array.isArray(o)) return o || {};
+  const r = {}; for(const k in o) r[strip(k).replace(/[\s-]+/g,'_')] = o[k]; return r;
+}
+function normDay(v){ const s = strip(v).replace(/[^a-z]/g,''); const d = DAYS.find(x => x[0] === s); return d ? d[0] : null; }
+function normMeal(v){ const s = strip(v).replace(/[^a-z]/g,''); if(s.startsWith('regg')) return 'reggeli'; if(s.startsWith('eb')) return 'ebed'; if(s.startsWith('vacs')) return 'vacsora'; return null; }
+function normDiff(v){ const s = strip(v); if(s.startsWith('konny')) return 'konnyu'; if(s.startsWith('kozep')) return 'kozepes'; if(s.startsWith('ossz') || s.startsWith('nehez')) return 'osszetett'; return null; }
+function normCat(v){
+  const s = strip(v);
+  if(/zold|gyum/.test(s)) return 'zoldseg';
+  if(/feher|hus|hal|tojas/.test(s)) return 'feherje';
+  if(/tej|ferment|sajt|joghurt/.test(s)) return 'tejtermek';
+  if(/gabon|huvely|rizs|teszta|kenyer/.test(s)) return 'gabona';
+  return 'egyeb';
+}
+function normLink(l){
+  if(!l) return null;
+  if(typeof l === 'string') l = {url:l};
+  l = normKeys(l);
+  const url = String(l.url || '').trim();
+  if(!/^https?:\/\/\S+$/i.test(url)) return null;
+  return {url, cim: String(l.cim || l.title || url)};
+}
+function normSteps(a){
+  if(!Array.isArray(a)) return [];
+  return a.map(s => {
+    if(typeof s === 'string') return {szoveg:s, perc:null};
+    s = normKeys(s);
+    return {szoveg: String(s.szoveg ?? s.text ?? ''), perc: num(s.perc)};
+  }).filter(s => s.szoveg);
+}
+function normIngr(a){
+  if(!Array.isArray(a)) return [];
+  return a.map(i => {
+    if(typeof i === 'string') return {nev:i.trim(), menny:null, egyseg:'', kategoria:'egyeb'};
+    i = normKeys(i);
+    return {nev:String(i.nev || '').trim(), menny:num(i.menny ?? i.mennyiseg), egyseg:String(i.egyseg || '').trim(), kategoria:normCat(i.kategoria)};
+  }).filter(i => i.nev);
+}
+function normItem(m, idx, kind){
+  m = normKeys(m);
+  const ns = (String(m.nutriscore_becsult ?? m.nutriscore ?? '').trim().toUpperCase().match(/^[A-E]/) || [null])[0];
+  const nova = num(m.nova);
+  const o = {
+    id: String(m.id || '').trim(), kind,
+    nap: normDay(m.nap), etkezes: normMeal(m.etkezes), ajanlott: bool(m.ajanlott),
+    nev: String(m.nev || 'Névtelen').trim(), konyha: String(m.konyha || '').trim(), feherjeforras: String(m.feherjeforras || '').trim(),
+    ido_perc: num(m.ido_perc), nehezseg: normDiff(m.nehezseg), adag: num(m.adag) || (kind === 'snack' ? 1 : 2),
+    feherje_g: num(m.feherje_g), kcal: num(m.kcal), rost_g: num(m.rost_g),
+    nova: nova && nova >= 1 && nova <= 4 ? Math.round(nova) : null, nutriscore: ns,
+    fermentalt: bool(m.fermentalt), maradek_holnapra: bool(m.maradek_holnapra), futonapra: bool(m.futonapra),
+    koltseg_ft: num(m.koltseg_ft), miert: String(m.miert || ''),
+    novenyek: Array.isArray(m.novenyek) ? m.novenyek.map(x => String(x).trim()).filter(Boolean) : [],
+    alapanyagok: normIngr(m.alapanyagok), lepesek: normSteps(m.lepesek), link: normLink(m.link),
+    eltarthatosag: String(m.eltarthatosag || ''), tarolas: String(m.tarolas || ''),
+    ai: bool(m.ai), reszletes: bool(m.reszletes), link_keresve: bool(m.link_keresve),
+    tippek: Array.isArray(m.tippek) ? m.tippek.map(String).filter(Boolean) : [],
+    helyettesitesek: Array.isArray(m.helyettesitesek) ? m.helyettesitesek.map(String).filter(Boolean) : [],
+    lepesek_eredeti: Array.isArray(m.lepesek_eredeti) ? normSteps(m.lepesek_eredeti) : null
+  };
+  if(kind !== 'etel'){ o.nap = null; if(kind === 'snack') o.etkezes = null; }
+  return o;
+}
+function normalizePlan(raw){
+  if(typeof raw === 'string'){
+    let s = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '').trim();
+    const a = s.indexOf('{'), b = s.lastIndexOf('}');
+    if(a > 0 && b > a) s = s.slice(a, b+1);
+    raw = JSON.parse(s);
+  }
+  const p = normKeys(raw);
+  if(!Array.isArray(p.etelek)) throw new Error('Nem találom az „etelek” listát – ez nem étrend-JSON.');
+  const etelek = [], tartalekok = [];
+  p.etelek.forEach((m, i) => {
+    const it = normItem(m, i, 'etel');
+    if(it.nap && it.etkezes) etelek.push(it);
+    else if(it.etkezes){ it.kind = 'tartalek'; it.nap = null; tartalekok.push(it); }
+  });
+  (Array.isArray(p.tartalekok) ? p.tartalekok : []).forEach((m, i) => { const it = normItem(m, i, 'tartalek'); if(it.etkezes) tartalekok.push(it); });
+  const snackek = (Array.isArray(p.snackek) ? p.snackek : []).map((m, i) => normItem(m, i, 'snack'));
+  // egyedi id-k
+  const seen = new Set();
+  const fix = (it, pref) => {
+    let id = it.id || (pref + '-' + (it.nap || '') + '-' + (it.etkezes || '') );
+    id = id.replace(/\s+/g, '-');
+    let k = id, n = 1; while(seen.has(k)) k = id + '-' + (++n);
+    seen.add(k); it.id = k;
+  };
+  etelek.forEach(x => fix(x, 'etel')); tartalekok.forEach(x => fix(x, 'tartalek')); snackek.forEach(x => fix(x, 'snack'));
+  // a "nap+étkezés" hármasban ha nincs ajánlott, az első legyen az
+  for(const [d] of DAYS) for(const [m] of MEALS){
+    const g = etelek.filter(x => x.nap === d && x.etkezes === m);
+    if(g.length && !g.some(x => x.ajanlott)) g[0].ajanlott = true;
+  }
+  const cel = normKeys(p.napi_cel);
+  let ev = num(p.ev), het = num(p.het);
+  const kd = String(p.kezdo_datum || '').slice(0,10);
+  if(!ev || !het){ const w = isoWeek(/^\d{4}-\d{2}-\d{2}$/.test(kd) ? new Date(kd + 'T12:00:00') : new Date()); ev = ev || w.ev; het = het || w.het; }
+  const mp = normKeys(p.meal_prep);
+  return {
+    ev, het, kezdo_datum: /^\d{4}-\d{2}-\d{2}$/.test(kd) ? kd : '', generalva: String(p.generalva || ''),
+    tema: String(p.tema || ''), demo: bool(p.demo), ai: bool(p.ai),
+    megjegyzesek: (Array.isArray(p.megjegyzesek) ? p.megjegyzesek : (p.megjegyzesek ? [p.megjegyzesek] : [])).map(String).filter(Boolean),
+    napi_cel: {feherje_min: num(cel.feherje_min) || 81, feherje_max: num(cel.feherje_max) || 104, kcal_min: num(cel.kcal_min) || 2100, kcal_max: num(cel.kcal_max) || 2300},
+    futonap_tipp: String(p.futonap_tipp || ''),
+    meal_prep: {ido_perc: num(mp.ido_perc), lepesek: (Array.isArray(mp.lepesek) ? mp.lepesek : []).map(s => {
+      if(typeof s === 'string') return {szoveg:s, tarolas:'', felhasznalas:''};
+      s = normKeys(s); return {szoveg:String(s.szoveg || ''), tarolas:String(s.tarolas || ''), felhasznalas:String(s.felhasznalas || '')};
+    }).filter(s => s.szoveg)},
+    etelek, tartalekok, snackek
+  };
+}
+
+/* ---------- beépített demo ---------- */
+const DEMO = {
+  demo: true, ev: 2026, het: 45, kezdo_datum: '2026-11-02', generalva: '2026-11-01T19:00:00+01:00',
+  tema: 'Beépített demo – páratlan hét, ázsiai / skandináv',
+  megjegyzesek: ['Ez csak minta: a valódi heti terv a week.json-ból jön (Több → Betöltés).'],
+  napi_cel: {feherje_min: 81, feherje_max: 104, kcal_min: 2100, kcal_max: 2300},
+  futonap_tipp: 'Futás előtt 2 órával a zabkása, utána a hajdinás makrélatál a legjobb: gyors és lassú szénhidrát + fehérje.',
+  meal_prep: {ido_perc: 60, lepesek: [
+    {szoveg: 'Főzz meg 250 g hajdinát.', tarolas: 'Dobozban, hűtőben 4 napig', felhasznalas: 'Hétfői ebéd, keddi saláta'},
+    {szoveg: 'Süss meg 2 tálca kockázott céklát és sütőtököt.', tarolas: 'Hűtőben 4 napig', felhasznalas: 'Ebédek, saláták'}
+  ]},
+  etelek: [
+    {id:'demo-hetfo-reggeli-1', nap:'hétfő', etkezes:'reggeli', ajanlott:true, nev:'Skyr-os zabkása körtével és dióval', konyha:'skandináv', feherjeforras:'tejtermék', ido_perc:10, nehezseg:'könnyű', adag:2, feherje_g:31, kcal:540, rost_g:9, nova:1, nutriscore_becsult:'A', fermentalt:true, futonapra:true, koltseg_ft:900, miert:'Zab béta-glükán + skyr fehérje: egyenletes vércukor délig.', novenyek:['zab','körte','dió','lenmag'],
+      alapanyagok:[{nev:'zabpehely',menny:120,egyseg:'g',kategoria:'gabona'},{nev:'skyr (natúr)',menny:400,egyseg:'g',kategoria:'tejtermék'},{nev:'körte',menny:2,egyseg:'db',kategoria:'zöldség'},{nev:'dió',menny:30,egyseg:'g',kategoria:'egyéb'},{nev:'lenmag (darált)',menny:20,egyseg:'g',kategoria:'egyéb'}],
+      lepesek:[{szoveg:'Főzd a zabot 400 ml vízzel.', perc:4},{szoveg:'Keverd hozzá a skyr felét és a lenmagot.'},{szoveg:'Tálald kockázott körtével, dióval és a maradék skyrral.'}], link:null},
+    {id:'demo-hetfo-reggeli-2', nap:'hetfo', etkezes:'reggeli', nev:'Tojásos-makrélás rozskenyér', konyha:'skandináv', feherjeforras:'hal, tojás', ido_perc:12, nehezseg:'konnyu', adag:2, feherje_g:29, kcal:500, rost_g:7, nova:3, nutriscore_becsult:'B', koltseg_ft:1300, miert:'Omega-3 + teljes kiőrlésű rozs.', novenyek:['rozs','retek','kapor'],
+      alapanyagok:[{nev:'tojás',menny:4,egyseg:'db',kategoria:'fehérje'},{nev:'füstölt makréla',menny:150,egyseg:'g',kategoria:'fehérje'},{nev:'teljes kiőrlésű rozskenyér',menny:4,egyseg:'szelet',kategoria:'gabona'},{nev:'retek',menny:6,egyseg:'db',kategoria:'zöldség'}],
+      lepesek:[{szoveg:'Főzd keményre a tojást.', perc:9},{szoveg:'Rakd a kenyérre a makrélát, tojást, retket.'}], link:null},
+    {id:'demo-hetfo-ebed-1', nap:'hetfo', etkezes:'ebéd', ajanlott:true, nev:'Makrélás hajdinatál céklával', konyha:'magyar újragondolva', feherjeforras:'hal', ido_perc:20, nehezseg:'könnyű', adag:2, feherje_g:33, kcal:700, rost_g:10, nova:3, nutriscore_becsult:'A', fermentalt:true, maradek_holnapra:true, futonapra:true, koltseg_ft:2400, miert:'Hajdina: magnézium; makréla: omega-3; savanyú káposzta: élőflóra.', novenyek:['hajdina','cékla','savanyú káposzta','petrezselyem'],
+      alapanyagok:[{nev:'hajdina',menny:160,egyseg:'g',kategoria:'gabona'},{nev:'makréla (konzerv, saját levében)',menny:250,egyseg:'g',kategoria:'fehérje'},{nev:'cékla (főtt)',menny:300,egyseg:'g',kategoria:'zöldség'},{nev:'savanyú káposzta',menny:200,egyseg:'g',kategoria:'tejtermek'},{nev:'olívaolaj',menny:2,egyseg:'ek',kategoria:'egyeb'}],
+      lepesek:[{szoveg:'Főzd meg a hajdinát.', perc:12},{szoveg:'Kockázd a céklát, morzsold a makrélát.'},{szoveg:'Tálald savanyú káposztával, olívaolajjal.'}], link:null},
+    {id:'demo-hetfo-vacsora-1', nap:'hetfo', etkezes:'vacsora', ajanlott:true, nev:'Kimchis pirított rizs tojással', konyha:'koreai', feherjeforras:'tojás, edamame', ido_perc:20, nehezseg:'könnyű', adag:2, feherje_g:27, kcal:620, rost_g:8, nova:3, nutriscore_becsult:'B', fermentalt:true, koltseg_ft:1700, miert:'Kimchi probiotikum + barna rizs rost + tojás fehérje.', novenyek:['barna rizs','kimchi','edamame','újhagyma'],
+      alapanyagok:[{nev:'barna rizs (főtt)',menny:400,egyseg:'g',kategoria:'gabona'},{nev:'kimchi',menny:200,egyseg:'g',kategoria:'tejtermék'},{nev:'tojás',menny:4,egyseg:'db',kategoria:'fehérje'},{nev:'edamame (fagyasztott)',menny:150,egyseg:'g',kategoria:'gabona'}],
+      lepesek:[{szoveg:'Pirítsd a kimchit 2 percig.', perc:2},{szoveg:'Add hozzá a rizst és az edamamét.', perc:5},{szoveg:'Tükörtojással tálald.', perc:3}],
+      link:{url:'https://www.sbs.com.au/food/recipe/quick-kimchi-fried-rice/iasgw2w0a', cim:'SBS Food – Quick kimchi fried rice'}}
+  ],
+  tartalekok: [
+    {id:'demo-tartalek-ebed-1', etkezes:'ebéd', nev:'Vöröslencse-dhal spenóttal', konyha:'indiai', feherjeforras:'hüvelyes', ido_perc:25, nehezseg:'könnyű', adag:2, feherje_g:26, kcal:610, rost_g:14, nova:1, nutriscore_becsult:'A', koltseg_ft:1100, miert:'Olcsó, rostdús, növényi fehérje.', novenyek:['vöröslencse','spenót','hagyma','gyömbér'],
+      alapanyagok:[{nev:'vöröslencse',menny:200,egyseg:'g',kategoria:'gabona'},{nev:'spenót',menny:200,egyseg:'g',kategoria:'zöldség'},{nev:'vöröshagyma',menny:1,egyseg:'db',kategoria:'zöldség'},{nev:'görög joghurt',menny:200,egyseg:'g',kategoria:'tejtermék'}],
+      lepesek:[{szoveg:'Párold a hagymát.', perc:4},{szoveg:'Főzd puhára a lencsét 600 ml vízben.', perc:15},{szoveg:'Keverd bele a spenótot, joghurttal tálald.'}], link:null}
+  ],
+  snackek: [
+    {id:'demo-snack-1', nev:'Pirított fűszeres csicseriborsó', ido_perc:35, eltarthatosag:'5 nap', tarolas:'Légmentes dobozban, szobahőn', adag:5, feherje_g:8, kcal:170, koltseg_ft:600, miert:'Ropog, mint a chips, de rost és fehérje van benne.', novenyek:['csicseriborsó','füstölt paprika'],
+      alapanyagok:[{nev:'csicseriborsó (konzerv)',menny:2,egyseg:'doboz',kategoria:'gabona'},{nev:'olívaolaj',menny:1,egyseg:'ek',kategoria:'egyeb'}],
+      lepesek:[{szoveg:'Szárítsd le alaposan.'},{szoveg:'Süsd 200 °C-on, félidőben rázd át.', perc:30}], link:null},
+    {id:'demo-snack-2', nev:'Kefir dióval és fahéjjal', ido_perc:2, eltarthatosag:'1 nap', tarolas:'Hűtőben', adag:1, feherje_g:9, kcal:210, koltseg_ft:350, miert:'Fermentált + egészséges zsír: elveszi az édességvágyat.', novenyek:['dió','fahéj'],
+      alapanyagok:[{nev:'kefir',menny:250,egyseg:'ml',kategoria:'tejtermek'},{nev:'dió',menny:15,egyseg:'g',kategoria:'egyeb'}],
+      lepesek:[{szoveg:'Öntsd pohárba, szórd meg dióval, fahéjjal.'}], link:null}
+  ]
+};
+
+/* ---------- index, állapot ---------- */
+function rebuildIndex(){
+  MI = {};
+  if(!plan) return;
+  [...plan.etelek, ...plan.tartalekok, ...plan.snackek].forEach(x => MI[x.id] = x);
+}
+function ensureWeekState(){
+  const k = weekKeyOf(plan);
+  const demo = !!plan.demo;
+  const gen = plan.generalva || '';
+  if(sel && sel.week === k && !!sel.demo === demo && sel.gen === undefined){ sel.gen = gen; store.set('sel', sel); }
+  // új terv ugyanarra a hétre (pl. újragenerálás) → a régi választások már más ételekre mutatnának
+  if(!sel || sel.week !== k || !!sel.demo !== demo || sel.gen !== gen){ sel = {week:k, demo, gen, slots:{}, swaps:{}, snacks:[], prep:{}}; store.set('sel', sel); }
+  if(!checks || checks.week !== k || !!checks.demo !== demo){ checks = {week:k, demo, items:{}}; store.set('checks', checks); }
+  // érvénytelen hivatkozások takarítása (pl. ugyanarra a hétre újragenerált terv)
+  for(const s in sel.swaps) sel.swaps[s] = (sel.swaps[s] || []).filter(id => MI[id]);
+  for(const s in sel.slots){
+    const m = MI[sel.slots[s]]; const [d, e] = s.split('-');
+    const ok = m && m.kind !== 'snack' && ((m.nap === d && m.etkezes === e) || (sel.swaps[s] || []).includes(m.id));
+    if(!ok) delete sel.slots[s];
+  }
+  sel.snacks = (sel.snacks || []).filter(id => MI[id]);
+}
+function saveSel(){ store.set('sel', sel); upsertHistory(); }
+function upsertHistory(){
+  if(!plan || plan.demo) return;
+  const key = weekKeyOf(plan);
+  const names = Object.values(sel.slots).map(id => MI[id] && MI[id].nev).filter(Boolean);
+  const e = {key, ev:plan.ev, het:plan.het, tema:plan.tema, valasztott:[...new Set(names)]};
+  history = history.filter(h => h.key !== key);
+  history.push(e);
+  history.sort((a,b) => a.key < b.key ? -1 : 1);
+  history = history.slice(-12);
+  store.set('history', history);
+}
+function loadPlan(raw, quiet){
+  const p = normalizePlan(raw);
+  const total = p.etelek.length + p.tartalekok.length + p.snackek.length;
+  if(!total) throw new Error('A tervben nincs egyetlen étel sem.');
+  plan = p; store.set('plan', plan);
+  rebuildIndex(); ensureWeekState(); upsertHistory();
+  ui.day = defaultDay(); ui.open = []; saveUI();
+  renderAll();
+  if(!quiet) toast(`Betöltve: ${p.ev}/${p.het}. hét · ${p.etelek.length} étel, ${p.tartalekok.length} tartalék, ${p.snackek.length} snack`);
+  return p;
+}
+function defaultDay(){
+  const t = todayDay();
+  if(!plan) return t;
+  if(plan.etelek.some(x => x.nap === t)) return t;
+  const f = DAYS.find(d => plan.etelek.some(x => x.nap === d[0]));
+  return f ? f[0] : t;
+}
+async function fetchServerWeek(manual){
+  try{
+    const r = await fetch('week.json?t=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const txt = await r.text();
+    const p = normalizePlan(txt);
+    const newer = p.generalva && (!plan || !plan.generalva || Date.parse(p.generalva) > Date.parse(plan.generalva));
+    const same = plan && plan.generalva === p.generalva && weekKeyOf(plan) === weekKeyOf(p);
+    const should = manual || !plan || (plan.demo && !same) || (newer && !same);
+    if(should){ loadPlan(txt, true); toast(manual ? 'Terv újratöltve a szerverről' : `Új heti terv a szerverről: ${p.ev}/${p.het}. hét`); }
+    else if(manual) toast('A szerveren nincs újabb terv');
+  }catch(e){
+    if(manual) toast('Nem érhető el week.json a szerveren');
+  }
+}
+
+/* ---------- számítások ---------- */
+function slotKey(d, m){ return d + '-' + m; }
+function slotMeals(d, m){
+  const base = plan.etelek.filter(x => x.nap === d && x.etkezes === m);
+  const rec = base.filter(x => x.ajanlott), rest = base.filter(x => !x.ajanlott);
+  const extra = (sel.swaps[slotKey(d,m)] || []).map(id => MI[id]).filter(x => x && !base.includes(x));
+  return [...rec, ...rest, ...extra];
+}
+function effMeal(d, m){
+  const id = sel.slots[slotKey(d,m)];
+  if(id && MI[id]) return {meal:MI[id], est:false};
+  const r = plan.etelek.find(x => x.nap === d && x.etkezes === m && x.ajanlott);
+  return r ? {meal:r, est:true} : null;
+}
+function dayStats(d){
+  let p = 0, k = 0, est = 0, n = 0, ferm = false;
+  for(const [m] of MEALS){ const e = effMeal(d, m); if(!e) continue; n++; if(e.est) est++; p += e.meal.feherje_g || 0; k += e.meal.kcal || 0; if(e.meal.fermentalt) ferm = true; }
+  return {p, k, est, n, ferm};
+}
+function dayComplete(d){ return MEALS.every(([m]) => sel.slots[slotKey(d,m)]); }
+function isSelected(id){ return Object.values(sel.slots).includes(id); }
+function selectedMeals(){ return Object.entries(sel.slots).map(([s, id]) => ({slot:s, meal:MI[id]})).filter(x => x.meal); }
+function factorFor(m){ return m.kind === 'snack' ? 1 : settings.fo / (m.adag || 2); }
+function baseName(n){ return n.replace(/\s*\([^)]*\)/g, '').replace(/\s+/g,' ').trim(); }
+function shoppingItems(){
+  const map = new Map();
+  const add = (ing, factor, src) => {
+    const nev = baseName(ing.nev); const nk = strip(nev); const key = nk + '|' + strip(ing.egyseg);
+    let it = map.get(key);
+    if(!it){ it = {key, nk, nev, egyseg:ing.egyseg, kategoria:ing.kategoria, menny:0, hasQty:false, src:[]}; map.set(key, it); }
+    if(ing.menny != null){ it.menny += ing.menny * factor; it.hasQty = true; }
+    if(!it.src.includes(src)) it.src.push(src);
+  };
+  for(const {meal} of selectedMeals()){ const f = factorFor(meal); meal.alapanyagok.forEach(i => add(i, f, meal.nev)); }
+  for(const id of sel.snacks){ const s = MI[id]; if(s) s.alapanyagok.forEach(i => add(i, 1, s.nev)); }
+  return [...map.values()].sort((a,b) => a.nev.localeCompare(b.nev, 'hu'));
+}
+function inPantry(nk){ return pantry.some(p => strip(p) === nk); }
+function costSelected(){
+  let c = 0;
+  for(const {meal} of selectedMeals()) c += (meal.koltseg_ft || 0) * factorFor(meal);
+  for(const id of sel.snacks) c += (MI[id] && MI[id].koltseg_ft) || 0;
+  return c;
+}
+function costWithRecommended(){
+  let c = 0;
+  for(const [d] of DAYS) for(const [m] of MEALS){ const e = effMeal(d, m); if(e) c += (e.meal.koltseg_ft || 0) * factorFor(e.meal); }
+  for(const id of sel.snacks) c += (MI[id] && MI[id].koltseg_ft) || 0;
+  return c;
+}
+function weekNumbers(){
+  const plants = new Map(); let fermDays = 0, pSum = 0, pDays = 0;
+  for(const [d] of DAYS){
+    const st = dayStats(d);
+    if(st.n){ pSum += st.p; pDays++; }
+    if(st.ferm) fermDays++;
+    for(const [m] of MEALS){ const e = effMeal(d, m); if(e) e.meal.novenyek.forEach(n => { const k = strip(n); if(k && !plants.has(k)) plants.set(k, n); }); }
+  }
+  for(const id of sel.snacks){ const s = MI[id]; if(s) s.novenyek.forEach(n => { const k = strip(n); if(k && !plants.has(k)) plants.set(k, n); }); }
+  return {plants:[...plants.values()].sort((a,b) => a.localeCompare(b,'hu')), fermDays, avgP: pDays ? pSum / pDays : 0, pDays};
+}
+
+/* ---------- renderelés ---------- */
+function renderAll(){
+  applyTheme();
+  $('#sub').textContent = plan ? `${plan.ev}/${plan.het}. hét${plan.tema ? ' · ' + plan.tema : ''}` : 'Nincs betöltött terv';
+  $('#demoBadge').hidden = !(plan && plan.demo);
+  document.querySelectorAll('.tabbar button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.id === ui.tab)));
+  for(const t of ['het','bev','snack','tobb']) $('#tab-' + t).hidden = ui.tab !== t;
+  const n = plan ? shoppingItems().filter(i => !checks.items[i.key] && !inPantry(i.nk)).length : 0;
+  const b = $('#shopBadge'); b.hidden = !n; b.textContent = n;
+  if(ui.tab === 'het') renderHet();
+  else if(ui.tab === 'bev') renderShop();
+  else if(ui.tab === 'snack') renderSnacks();
+  else renderMore();
+  renderTimerBar();
+}
+function emptyState(){
+  return `<div class="card empty"><div class="big">🥗</div><h2 style="margin:8px 0 6px">Még nincs heti terv</h2>
+  <p class="muted">${aiOn() ? 'A fenti gombbal a Claude megtervezi a hetet – vagy betölthető egy kész <b>week.json</b> a Több fülön.' : 'A heti terv a Több fülön tölthető be (<b>week.json</b>), vagy Claude API-kulccsal az app maga is megtervezi.'}</p>
+  <div class="row" style="justify-content:center;margin-top:12px"><button class="btn primary" data-act="demo">Demo betöltése</button><button class="btn" data-act="tab" data-id="tobb">Betöltés</button></div></div>`;
+}
+function badgeRow(m){
+  const c = [];
+  if(m.ai) c.push('<span class="chip ai-chip">✨ Claude</span>');
+  if(m.ido_perc != null) c.push(`<span class="chip">⏱ ${m.ido_perc} p</span>`);
+  if(m.nehezseg) c.push(`<span class="chip">${DIFF[m.nehezseg]}</span>`);
+  if(m.feherje_g != null) c.push(`<span class="chip strong">💪 ${m.feherje_g} g</span>`);
+  if(m.nova) c.push(`<span class="nova nova${m.nova}" title="NOVA ${m.nova}">NOVA ${m.nova}</span>`);
+  if(m.nutriscore) c.push(`<span class="ns ${m.nutriscore}" style="background:${NS_COL[m.nutriscore]}" title="Becsült Nutri-Score">${m.nutriscore}</span>`);
+  if(m.fermentalt) c.push(`<span title="Fermentált">🦠</span>`);
+  if(m.maradek_holnapra) c.push(`<span title="Maradék holnapra">🔁</span>`);
+  if(m.futonapra) c.push(`<span title="Futónapra jó">🏃</span>`);
+  return c.join('');
+}
+function snackBadgeRow(s){
+  const c = [];
+  if(s.ido_perc != null) c.push(`<span class="chip">⏱ ${s.ido_perc} p</span>`);
+  if(s.eltarthatosag) c.push(`<span class="chip">🗓 ${esc(s.eltarthatosag)}</span>`);
+  if(s.feherje_g != null) c.push(`<span class="chip strong">💪 ${s.feherje_g} g</span>`);
+  if(s.kcal != null) c.push(`<span class="chip">${s.kcal} kcal</span>`);
+  return c.join('');
+}
+function ratingOf(m){ const r = ratings[strip(m.nev)]; return r ? r.v : null; }
+function ingList(m){
+  const f = factorFor(m);
+  if(!m.alapanyagok.length) return '<p class="muted small">Nincs megadva.</p>';
+  return '<ul class="ing">' + m.alapanyagok.map(i => `<li><span>${esc(i.nev)}</span><span class="q">${i.menny != null ? esc(fmtQty(i.menny * f, i.egyseg)) : esc(i.egyseg)}</span></li>`).join('') + '</ul>';
+}
+function stepList(m){
+  if(!m.lepesek.length) return '<p class="muted small">Nincsenek lépések.</p>';
+  return '<ol class="steps">' + m.lepesek.map(s => `<li>${esc(s.szoveg)}${s.perc ? ` <span class="pm">⏱ ${s.perc} perc</span>` : ''}</li>`).join('') + '</ol>';
+}
+function linkHTML(m){
+  return m.link ? `<a class="link" href="${esc(m.link.url)}" target="_blank" rel="noopener noreferrer">🔗 ${esc(m.link.cim)}</a>` : `<p class="link muted">🔗 ${m.link_keresve ? 'a keresés nem talált ellenőrzött linket' : 'nincs ellenőrzött link'}</p>`;
+}
+function rateButtons(m){
+  const r = ratingOf(m);
+  return `<div class="rate">${Object.entries(RATE).map(([k,[ic,lb]]) => `<button class="${r===k?'on':''}" data-act="rate" data-id="${esc(m.id)}" data-v="${k}">${ic} ${lb}</button>`).join('')}</div>`;
+}
+function mealCard(m, slot){
+  const open = ui.open.includes(m.id);
+  const isSel = slot ? sel.slots[slot] === m.id : isSelected(m.id);
+  const homeSlot = slot || (m.nap && m.etkezes ? slotKey(m.nap, m.etkezes) : null);
+  const r = ratingOf(m);
+  const swapped = slot && m.nap !== slot.split('-')[0] ? `<span class="chip">🔄 ${m.nap ? dayName(m.nap) : 'tartalék'}</span>` : '';
+  const f = factorFor(m);
+  let body = '';
+  if(open){
+    body = `<div class="mb">
+      ${m.miert ? `<p class="why">${esc(m.miert)}</p>` : '<div style="height:12px"></div>'}
+      <div class="facts">
+        <div class="fact">Energia<b>${m.kcal != null ? m.kcal + ' kcal' : '–'}</b></div>
+        <div class="fact">Rost<b>${m.rost_g != null ? m.rost_g + ' g' : '–'}</b></div>
+        <div class="fact">Konyha<b>${esc(m.konyha || '–')}</b></div>
+        <div class="fact">Becsült költség<b>${m.koltseg_ft != null ? fmtFt(m.koltseg_ft * f) : '–'}</b></div>
+      </div>
+      <p class="small muted" style="margin:-4px 0 0">Tápértékek 1 adagra · ${!slot && !m.nap ? 'tartalék · ' : ''}${esc(m.feherjeforras || '')}</p>
+      <h4>Hozzávalók (${settings.fo} főre)</h4>${ingList(m)}
+      <h4>Lépések${m.reszletes ? ' <span class="chip ai-chip">részletes</span>' : ''}</h4>${stepList(m)}
+      ${extrasHTML(m)}
+      ${linkHTML(m)}
+      <div class="actions">
+        ${homeSlot ? (isSel ? `<button class="btn" data-act="unselect" data-slot="${homeSlot}">Választás törlése</button>` : `<button class="btn primary" data-act="select" data-id="${esc(m.id)}" data-slot="${homeSlot}">Ezt választom</button>`) : ''}
+        <button class="btn" data-act="cook" data-id="${esc(m.id)}">👨‍🍳 Főzés mód</button>
+        ${homeSlot ? `<button class="btn" data-act="swap" data-slot="${homeSlot}">🔄 Csere</button>` : ''}
+      </div>
+      ${rateButtons(m)}
+      ${aiButtons(m)}
+    </div>`;
+  }
+  return `<div class="card meal${open ? ' open' : ''}${isSel ? ' sel' : ''}" data-meal="${esc(m.id)}">
+    <button class="mh" data-act="toggle" data-id="${esc(m.id)}" aria-expanded="${open}">
+      <div class="t">${isSel ? '<span class="selmark">✓</span>' : ''}<span class="nm">${m.ajanlott ? '<span class="star">⭐</span> ' : ''}${esc(m.nev)}</span>${r ? `<span>${RATE[r][0]}</span>` : ''}<span class="chev">▾</span></div>
+      <div class="chips">${swapped}${badgeRow(m)}</div>
+    </button>${body}</div>`;
+}
+function snackCard(s){
+  const open = ui.open.includes(s.id);
+  const on = sel.snacks.includes(s.id);
+  const r = ratingOf(s);
+  let body = '';
+  if(open){
+    body = `<div class="mb">
+      ${s.miert ? `<p class="why">${esc(s.miert)}</p>` : '<div style="height:12px"></div>'}
+      <div class="facts">
+        <div class="fact">Tárolás<b style="font-size:13px">${esc(s.tarolas || '–')}</b></div>
+        <div class="fact">Eltarthatóság<b>${esc(s.eltarthatosag || '–')}</b></div>
+        <div class="fact">Adag<b>${s.adag} adag</b></div>
+        <div class="fact">Becsült költség<b>${s.koltseg_ft != null ? fmtFt(s.koltseg_ft) : '–'}</b></div>
+      </div>
+      <h4>Hozzávalók (${s.adag} adagra)</h4>${ingList(s)}
+      <h4>Lépések${s.reszletes ? ' <span class="chip ai-chip">részletes</span>' : ''}</h4>${stepList(s)}
+      ${extrasHTML(s)}
+      ${linkHTML(s)}
+      <div class="actions">
+        <button class="btn ${on ? 'on' : 'primary'}" data-act="snacklist" data-id="${esc(s.id)}">${on ? '✓ Listán – levesz' : '🛒 Listára'}</button>
+        <button class="btn" data-act="cook" data-id="${esc(s.id)}">👨‍🍳 Főzés mód</button>
+      </div>
+      ${rateButtons(s)}
+      ${aiButtons(s)}
+    </div>`;
+  }
+  return `<div class="card meal${open ? ' open' : ''}${on ? ' sel' : ''}" data-meal="${esc(s.id)}">
+    <button class="mh" data-act="toggle" data-id="${esc(s.id)}" aria-expanded="${open}">
+      <div class="t">${on ? '<span class="selmark">🛒</span>' : ''}<span class="nm">${esc(s.nev)}</span>${r ? `<span>${RATE[r][0]}</span>` : ''}<span class="chev">▾</span></div>
+      <div class="chips">${snackBadgeRow(s)}</div>
+    </button>${body}</div>`;
+}
+function gauge(label, val, min, max, unit){
+  const top = Math.max(max * 1.3, val * 1.05);
+  const pct = v => Math.min(100, v / top * 100);
+  const low = val < min;
+  return `<div class="gauge"><div class="lbl"><span>${label}</span><span><b>${Math.round(val)}</b> / ${min}–${max} ${unit}</span></div>
+    <div class="track"><div class="band" style="left:${pct(min)}%;width:${pct(max) - pct(min)}%"></div><div class="fill${low ? ' low' : ''}" style="width:${pct(val)}%"></div></div></div>`;
+}
+function renderHet(){
+  const el = $('#tab-het');
+  if(!plan){ el.innerHTML = jobCardHTML() + genBannerHTML() + emptyState(); return; }
+  let h = jobCardHTML() + genBannerHTML();
+  if(plan.megjegyzesek.length) h += `<div class="card"><ul class="notes">${plan.megjegyzesek.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>`;
+  if(plan.meal_prep.lepesek.length){
+    const done = plan.meal_prep.lepesek.filter((_, i) => sel.prep[i]).length;
+    h += `<div class="card prep"><button class="ph" data-act="prep">
+      <span style="font-size:20px">🥡</span><span class="grow"><b>Meal prep</b><br><span class="small muted">${plan.meal_prep.ido_perc ? plan.meal_prep.ido_perc + ' perc · ' : ''}${done}/${plan.meal_prep.lepesek.length} kész</span></span><span class="chev" style="transform:rotate(${ui.prepOpen ? 180 : 0}deg)">▾</span></button>
+      ${ui.prepOpen ? `<ol>${plan.meal_prep.lepesek.map((s, i) => `<li><button class="cb${sel.prep[i] ? ' on' : ''}" data-act="prepcheck" data-i="${i}" aria-label="kész">✓</button><div class="grow"><div class="${sel.prep[i] ? 'done-txt' : ''}">${esc(s.szoveg)}</div>${s.tarolas ? `<div class="small muted">🧊 ${esc(s.tarolas)}</div>` : ''}${s.felhasznalas ? `<div class="small muted">➜ ${esc(s.felhasznalas)}</div>` : ''}</div></li>`).join('')}</ol>` : ''}</div>`;
+  }
+  h += `<div class="seg" style="margin-top:12px"><button data-act="view" data-id="napok" aria-pressed="${ui.view === 'napok'}">Napok</button><button data-act="view" data-id="osszes" aria-pressed="${ui.view === 'osszes'}">Összes étel</button></div>`;
+  h += ui.view === 'napok' ? renderDays() : renderAllMeals();
+  el.innerHTML = h;
+}
+function renderDays(){
+  const today = todayDay();
+  if(!ui.day) ui.day = defaultDay();
+  let h = '<div class="days">' + DAYS.map(([id, nm, sh], i) => {
+    const d = dayDate(i);
+    return `<button data-act="day" data-id="${id}" aria-pressed="${ui.day === id}" class="${id === today ? 'today' : ''}" aria-label="${nm}">
+      ${sh}<b>${d ? d.getDate() : ''}</b>${dayComplete(id) ? '<span class="tick">✓</span>' : ''}</button>`;
+  }).join('') + '</div>';
+  const d = ui.day;
+  const st = dayStats(d);
+  const c = plan.napi_cel;
+  const di = DAYS.findIndex(x => x[0] === d), dd = dayDate(di);
+  h += `<div class="card pad"><div class="row"><h2 style="font-size:18px" class="grow">${dayName(d)}${dd ? ` <span class="muted" style="font-weight:500;font-size:14px">${dd.toLocaleDateString('hu-HU',{month:'short',day:'numeric'})}</span>` : ''}</h2>${dayComplete(d) ? '<span class="pill" style="color:var(--ok)">✓ kész a nap</span>' : ''}</div>`;
+  if(st.n){
+    h += gauge('💪 Fehérje', st.p, c.feherje_min, c.feherje_max, 'g') + gauge('🔥 Energia', st.k, c.kcal_min, c.kcal_max, 'kcal');
+    if(st.est) h += `<p class="small muted" style="margin:6px 0 0">${st.est} étkezésnél még nincs választás – ott az ⭐ ajánlottal számol. A snackek nincsenek benne.</p>`;
+    if(st.p < c.feherje_min) h += `<div class="warnbox">⚠️ Hiányzik kb. <b>${Math.round(c.feherje_min - st.p)} g fehérje</b> a napi minimumhoz – egy fehérjedúsabb opció vagy snack (pl. skyr, kefir, főtt tojás) pótolhatja.</div>`;
+  } else h += '<p class="muted small" style="margin:8px 0 0">Erre a napra nincs étel a tervben.</p>';
+  h += '</div>';
+  for(const [m, mn] of MEALS){
+    const list = slotMeals(d, m);
+    const sk = slotKey(d, m);
+    const cur = sel.slots[sk] && MI[sel.slots[sk]];
+    h += `<div class="mealhead"><h2>${mn}</h2><span class="s">${cur ? '✓ ' + esc(cur.nev) : 'nincs választva'}</span></div>`;
+    if(!list.length) h += `<div class="card pad muted small">Nincs ${mn.toLowerCase()} erre a napra. <button class="btn sm" data-act="swap" data-slot="${sk}">🔄 Csere / hozzáadás</button></div>`;
+    h += list.map(x => mealCard(x, sk)).join('');
+  }
+  return h;
+}
+function passFilters(m){
+  const f = ui.filters;
+  const diffs = f.filter(x => DIFF[x]);
+  if(diffs.length && !diffs.includes(m.nehezseg)) return false;
+  if(f.includes('ajanlott') && !m.ajanlott) return false;
+  if(f.includes('fermentalt') && !m.fermentalt) return false;
+  if(f.includes('maradek') && !m.maradek_holnapra) return false;
+  if(f.includes('futo') && !m.futonapra) return false;
+  if(f.includes('gyors') && !(m.ido_perc != null && m.ido_perc <= 30)) return false;
+  if(f.includes('valasztott') && !isSelected(m.id)) return false;
+  return true;
+}
+const SKIP_ING = /(olaj|bors|fuszer|\bso\b|^so$|^viz$|\bviz\b)/;
+function renderAllMeals(){
+  let h = `<div class="filters" style="margin-top:12px">${FILTERS.map(([k, l]) => `<button class="fchip" data-act="filter" data-id="${k}" aria-pressed="${ui.filters.includes(k)}">${l}</button>`).join('')}</div>
+  <div class="selrow"><label>Csoportosítás<select data-act="group">${GROUPS.map(([k, l]) => `<option value="${k}"${ui.group === k ? ' selected' : ''}>${l}</option>`).join('')}</select></label>
+  <label>Rendezés<select data-act="sort">${SORTS.map(([k, l]) => `<option value="${k}"${ui.sort === k ? ' selected' : ''}>${l}</option>`).join('')}</select></label></div>`;
+  const all = [...plan.etelek, ...plan.tartalekok];
+  let list = all.filter(passFilters);
+  const order = m => { const di = m.nap ? DAYS.findIndex(d => d[0] === m.nap) : 7; const mi = MEALS.findIndex(x => x[0] === m.etkezes); return di * 10 + mi + (m.ajanlott ? 0 : .5); };
+  const sorters = {alap:(a,b) => order(a) - order(b), feherje:(a,b) => (b.feherje_g || 0) - (a.feherje_g || 0), ido:(a,b) => (a.ido_perc ?? 999) - (b.ido_perc ?? 999), kcal:(a,b) => (a.kcal ?? 9999) - (b.kcal ?? 9999)};
+  list.sort(sorters[ui.sort] || sorters.alap);
+  if(!list.length) return h + '<div class="card empty"><p class="muted">Nincs a szűrőknek megfelelő étel.</p></div>';
+  const groups = new Map();
+  const put = (g, m) => { if(!groups.has(g)) groups.set(g, []); groups.get(g).push(m); };
+  if(ui.group === 'alapanyag'){
+    const cnt = new Map();
+    all.forEach(m => new Set(m.alapanyagok.map(i => strip(baseName(i.nev)))).forEach(k => { if(!SKIP_ING.test(k)) cnt.set(k, (cnt.get(k) || 0) + 1); }));
+    const shown = new Map();
+    list.forEach(m => m.alapanyagok.forEach(i => { const k = strip(baseName(i.nev)); if((cnt.get(k) || 0) >= 2 && !SKIP_ING.test(k)){ if(!shown.has(k)) shown.set(k, baseName(i.nev)); const arr = groups.get(shown.get(k)) || []; if(!arr.includes(m)) put(shown.get(k), m); } }));
+    if(!groups.size) return h + '<div class="card empty"><p class="muted">Nincs olyan alapanyag, ami legalább 2 ételben szerepel.</p></div>';
+    const sorted = [...groups.entries()].sort((a,b) => b[1].length - a[1].length || a[0].localeCompare(b[0],'hu'));
+    groups.clear(); sorted.forEach(([k, v]) => groups.set(k, v));
+  } else {
+    const keyf = {
+      nap: m => m.nap ? dayName(m.nap) : 'Tartalékok',
+      nehezseg: m => m.nehezseg ? DIFF[m.nehezseg] : 'Nincs megadva',
+      feherjeforras: m => m.feherjeforras || 'Nincs megadva',
+      konyha: m => m.konyha || 'Nincs megadva',
+      nova: m => m.nova ? 'NOVA ' + m.nova : 'Nincs megadva'
+    }[ui.group] || (m => dayName(m.nap));
+    let keys = [...new Set(list.map(keyf))];
+    if(ui.group === 'nap'){ const o = [...DAYS.map(d => d[1]), 'Tartalékok']; keys.sort((a,b) => o.indexOf(a) - o.indexOf(b)); }
+    else if(ui.group === 'nehezseg'){ const o = [...Object.values(DIFF), 'Nincs megadva']; keys.sort((a,b) => o.indexOf(a) - o.indexOf(b)); }
+    else keys.sort((a,b) => a.localeCompare(b,'hu'));
+    keys.forEach(k => groups.set(k, []));
+    list.forEach(m => groups.get(keyf(m)).push(m));
+  }
+  for(const [g, ms] of groups){
+    h += `<div class="groupname">${esc(g)}<span class="c">${ms.length} étel</span></div>`;
+    h += ms.map(m => {
+      const where = m.nap ? `${dayName(m.nap)} · ${mealName(m.etkezes)}` : `Tartalék · ${mealName(m.etkezes)}`;
+      return mealCard(m, null).replace('<div class="chips">', `<div class="chips"><span class="chip">${esc(where)}</span>`);
+    }).join('');
+  }
+  return h;
+}
+function renderShop(){
+  const el = $('#tab-bev');
+  if(!plan){ el.innerHTML = emptyState(); return; }
+  const nSel = Object.keys(sel.slots).length, nSn = sel.snacks.length;
+  const cost = costSelected(), budget = settings.keret || 0;
+  const items = shoppingItems();
+  const home = items.filter(i => inPantry(i.nk));
+  const need = items.filter(i => !inPantry(i.nk));
+  const total = DAYS.reduce((a, [d]) => a + MEALS.filter(([m]) => plan.etelek.some(x => x.nap === d && x.etkezes === m)).length, 0);
+  let h = `<div class="card pad">
+    <div class="row"><div class="grow"><b>${nSel}</b> / ${total} étkezés · <b>${nSn}</b> snack kiválasztva</div></div>
+    <div class="row" style="margin-top:8px"><span class="grow">Becsült költség</span><b>${fmtFt(cost)}</b><span class="muted">/ ${fmtFt(budget)}</span></div>
+    <div class="bar2"><i class="${cost > budget ? 'over' : ''}" style="width:${budget ? Math.min(100, cost / budget * 100) : 0}%"></i></div>
+    ${cost > budget ? `<div class="warnbox">⚠️ A választások ${fmtFt(cost - budget)}-tal a heti keret felett vannak.</div>` : ''}
+    <p class="small muted" style="margin:8px 0 0">Ha minden üres helyre az ajánlott kerül: ≈ ${fmtFt(costWithRecommended())} (${settings.fo} főre).</p>
+    <div class="actions"><button class="btn primary" data-act="fillrec">⭐ Üres helyekre az ajánlottat</button></div>
+    <div class="actions" style="margin-top:6px"><button class="btn sm" data-act="copylist" ${need.length ? '' : 'disabled'}>📋 Lista másolása</button><button class="btn sm" data-act="clearchecks">Pipák törlése</button></div>
+  </div>`;
+  if(!items.length){
+    h += `<div class="card empty"><div class="big">🛒</div><p class="muted">A lista a kiválasztott ételekből és a listára tett snackekből áll össze. Válassz ételeket a Hét fülön, vagy nyomd meg a ⭐ gombot.</p></div>`;
+  } else {
+    for(const [cat, cn] of CATS){
+      const rows = need.filter(i => i.kategoria === cat).sort((a,b) => (checks.items[a.key] ? 1 : 0) - (checks.items[b.key] ? 1 : 0) || a.nev.localeCompare(b.nev,'hu'));
+      if(!rows.length) continue;
+      h += `<div class="sec-title">${cn}<span class="r">${rows.filter(r => !checks.items[r.key]).length} db</span></div><div class="card">` + rows.map(i => shopRow(i, false)).join('') + '</div>';
+    }
+    if(home.length) h += `<div class="sec-title">🏠 Otthon van<span class="r">${home.length} db</span></div><div class="card">` + home.map(i => shopRow(i, true)).join('') + '</div>';
+  }
+  el.innerHTML = h;
+}
+function shopRow(i, home){
+  const on = !!checks.items[i.key];
+  return `<div class="shop-row" data-key="${esc(i.key)}">
+    ${home ? '' : `<button class="cb${on ? ' on' : ''}" data-act="check" data-id="${esc(i.key)}" aria-label="megvan">✓</button>`}
+    <div class="grow"><div class="${on || home ? 'done-txt' : ''}"><span class="nm">${esc(i.nev)}</span><span class="qty">${i.hasQty ? esc(fmtQty(i.menny, i.egyseg)) : esc(i.egyseg)}</span></div>
+    <div class="src">${esc(i.src.join(' · '))}</div></div>
+    <button class="iconbtn" data-act="${home ? 'unpantry' : 'pantry'}" data-id="${esc(i.nev)}" title="${home ? 'Mégsincs otthon' : 'Otthon van'}" aria-label="${home ? 'Mégsincs otthon' : 'Otthon van'}">${home ? '↩️' : '🏠'}</button>
+  </div>`;
+}
+function renderSnacks(){
+  const el = $('#tab-snack');
+  if(!plan){ el.innerHTML = emptyState(); return; }
+  if(!plan.snackek.length){ el.innerHTML = '<div class="card empty"><p class="muted">Ebben a tervben nincsenek snackek.</p></div>'; return; }
+  el.innerHTML = `<p class="small muted" style="margin:4px 2px 10px">Étvágycsökkentő snackek a csoki és a chips helyett. A 🛒 gombbal kerülnek a bevásárlólistára (adagszámuk nem skálázódik).</p>` + plan.snackek.map(snackCard).join('');
+}
+function renderMore(){
+  const el = $('#tab-tobb');
+  let h = jobCardHTML() + aiSettingsHTML() + profileHTML();
+  h += `<div class="sec-title">Heti terv betöltése</div><div class="card pad">
+    <div class="row wrap"><button class="btn primary" data-act="pickfile">📂 Fájlból</button><button class="btn" data-act="serverfetch">🔄 A szerverről</button><button class="btn" data-act="demo">Demo</button>${plan ? '<button class="btn" data-act="exportplan">⬇️ Terv letöltése</button>' : ''}</div>
+    <textarea class="paste" id="pasteBox" placeholder="…vagy illeszd be ide a week.json tartalmát" style="margin-top:10px"></textarea>
+    <button class="btn" data-act="pasteload" style="margin-top:8px">Beillesztett szöveg betöltése</button>
+  </div>`;
+  h += `<div class="sec-title">Beállítások</div><div class="card">
+    <div class="field"><span>Hány főre főzöl?</span><div class="seg" style="width:140px"><button data-act="fo" data-id="1" aria-pressed="${settings.fo === 1}">1 fő</button><button data-act="fo" data-id="2" aria-pressed="${settings.fo === 2}">2 fő</button></div></div>
+    <div class="field"><span>Heti keret (Ft)</span><input class="num" id="keretInput" type="number" inputmode="numeric" min="0" step="1000" value="${settings.keret}"></div>
+    <div class="field"><span>Téma</span><div class="seg" style="width:200px">${[['auto','Auto'],['light','Világos'],['dark','Sötét']].map(([k,l]) => `<button data-act="tema" data-id="${k}" aria-pressed="${settings.tema === k}">${l}</button>`).join('')}</div></div>
+  </div>`;
+  if(plan){
+    const w = weekNumbers();
+    h += `<div class="sec-title">A heted számokban</div><div class="card">
+      <button class="stat" data-act="plants" style="width:100%;text-align:left"><span class="v">🌱 ${w.plants.length}</span><span class="grow">különböző növény a 30-as célból<br><span class="small muted">választások + ajánlottak + listán lévő snackek</span></span><span class="chev" style="transform:rotate(${ui.plantsOpen ? 180 : 0}deg)">▾</span></button>
+      ${ui.plantsOpen ? `<div class="plantlist">${w.plants.map(p => `<span class="chip">${esc(p)}</span>`).join('') || '<span class="muted small">Nincs adat.</span>'}</div>` : ''}
+      <div class="stat"><span class="v">🦠 ${w.fermDays}/7</span><span class="grow">nap fermentált étellel</span></div>
+      <div class="stat"><span class="v">💪 ${Math.round(w.avgP)}</span><span class="grow">g átlagos napi fehérje (${w.pDays} nap alapján, snackek nélkül)</span></div>
+      ${plan.futonap_tipp ? `<div class="stat"><span class="v" style="font-size:22px">🏃</span><span class="grow small">${esc(plan.futonap_tipp)}</span></div>` : ''}
+    </div>`;
+  }
+  h += `<div class="sec-title">Visszajelzés a következő hétre</div><div class="card pad">
+    <p class="small muted" style="margin:0 0 10px">Az értékelésekből és az utóbbi 3 hét választásaiból készül. A scheduled task promptjának végére kell beilleszteni.</p>
+    <button class="btn primary" data-act="feedback">📋 Visszajelzés másolása</button></div>`;
+  h += `<div class="sec-title">🏠 Kamra (otthon van)</div><div class="card pad">${pantry.length ? pantry.map(p => `<span class="kchip">${esc(p)}<button data-act="unpantry" data-id="${esc(p)}" aria-label="törlés">✕</button></span>`).join('') : '<span class="muted small">Üres. A bevásárlólistán a 🏠 gombbal kerül ide valami – és a következő heteken is itt marad.</span>'}</div>`;
+  h += `<div class="sec-title">Mentés</div><div class="card pad"><div class="row wrap">
+    <button class="btn" data-act="backupdl">⬇️ Mentés letöltése</button><button class="btn" data-act="backupcopy">📋 Mentés másolása</button>
+    <button class="btn" data-act="restore">♻️ Visszaállítás fájlból</button><button class="btn danger" data-act="wipe">🗑 Minden adat törlése</button></div></div>
+    <p class="ver">Étrend app v${APP_VERSION} · minden adat csak ezen az eszközön tárolódik</p>`;
+  el.innerHTML = h;
+}
+
+/* ---------- csere ---------- */
+function openSwap(slot){
+  if(swapUI.slot !== slot) swapUI = {slot, wish:[], text:'', fresh:[]};
+  const [d, m] = slot.split('-');
+  const res = plan.tartalekok.filter(x => x.etkezes === m && !x.ai);
+  const aiRes = plan.tartalekok.filter(x => x.etkezes === m && x.ai).reverse();
+  const others = plan.etelek.filter(x => x.etkezes === m && x.nap !== d);
+  const row = x => `<div class="swapitem"><div class="grow"><div style="font-weight:600">${x.ajanlott && x.nap ? '⭐ ' : ''}${esc(x.nev)}${(swapUI.fresh || []).includes(x.id) ? ' <span class="chip ai-chip">új</span>' : ''}</div>${x.ai && x.miert ? `<div class="small muted" style="margin-top:2px">${esc(x.miert)}</div>` : ''}<div class="chips" style="margin-top:4px">${x.nap ? `<span class="chip">${dayName(x.nap)}</span>` : ''}${badgeRow(x)}</div></div><button class="btn sm primary" data-act="swappick" data-id="${esc(x.id)}" data-slot="${slot}">Ezt</button></div>`;
+  let aiBox = '';
+  if(aiOn()){
+    const busy = aiBusy['alt:' + slot];
+    aiBox = `<div class="card pad aibox" style="margin-top:4px"><b>✨ Új ötlet Claude-tól</b>
+      <div class="chips" style="margin-top:8px">${Object.entries(WISH).map(([k, [l]]) => `<button class="fchip" data-act="wish" data-id="${k}" aria-pressed="${swapUI.wish.includes(k)}">${l}</button>`).join('')}</div>
+      <input class="txt" id="wishText" placeholder="Egyéb kérés (pl. maradék rizsből, csirke nélkül)" value="${esc(swapUI.text)}" style="margin-top:8px">
+      ${busy ? `<div class="ai-status small row" style="margin-top:10px;color:var(--ai)"><span class="spin"></span><span class="ai-status-t">${esc(busy)}</span></div>` : `<button class="btn ai" data-act="aialt" data-slot="${slot}" style="margin-top:10px;width:100%">✨ 3 új ötlet ehhez az étkezéshez</button>`}
+    </div>`;
+  }
+  openSheet(`🔄 Csere – ${dayName(d)}, ${mealName(m).toLowerCase()}`,
+    aiBox + (aiRes.length ? `<div class="sec-title">✨ Claude ötletei</div><div class="card">${aiRes.map(row).join('')}</div>` : '') +
+    `<div class="sec-title"${aiBox ? '' : ' style="margin-top:4px"'}>Tartalékok</div>${res.length ? `<div class="card">${res.map(row).join('')}</div>` : '<p class="muted small">Nincs tartalék ehhez az étkezéshez.</p>'}
+     <div class="sec-title">A hét más napjairól</div>${others.length ? `<div class="card">${others.map(row).join('')}</div>` : '<p class="muted small">Nincs más nap ebben a tervben.</p>'}`, 'swap');
+}
+function doSwap(slot, id){
+  sel.swaps[slot] = sel.swaps[slot] || [];
+  const [d, m] = slot.split('-');
+  const inBase = plan.etelek.some(x => x.id === id && x.nap === d && x.etkezes === m);
+  if(!inBase && !sel.swaps[slot].includes(id)) sel.swaps[slot].push(id);
+  sel.slots[slot] = id; saveSel();
+  if(!ui.open.includes(id)) { /* zárva marad, de látszik */ }
+  closeSheet(); renderAll();
+  toast('Csere kész: ' + MI[id].nev);
+}
+
+/* ---------- sheet / modal ---------- */
+function openSheet(title, body, kind){
+  const s = $('#sheet');
+  s.innerHTML = `<div class="sheet"><div class="sheet-h"><h2>${esc(title)}</h2><button class="btn sm" data-act="closesheet">Bezár</button></div><div class="sheet-b">${body}</div></div>`;
+  s.dataset.kind = kind || '';
+  s.hidden = false;
+}
+function closeSheet(){ const s = $('#sheet'); if(s.dataset.kind === 'ask') askState = null; s.hidden = true; s.innerHTML = ''; s.dataset.kind = ''; }
+
+/* ---------- főzés mód ---------- */
+function openCook(id){
+  if(!MI[id]) return;
+  cook = {id, step:0};
+  $('#cook').hidden = false; document.body.style.overflow = 'hidden';
+  renderCook(); requestWake();
+}
+function closeCook(){ cook = null; $('#cook').hidden = true; $('#cook').innerHTML = ''; document.body.style.overflow = ''; if(!jobRunning) releaseWake(); renderTimerBar(); }
+function renderCook(){
+  if(!cook) return;
+  const m = MI[cook.id]; const steps = m.lepesek.length ? m.lepesek : [{szoveg:'Ehhez az ételhez nincsenek lépések megadva.', perc:null}];
+  const i = Math.min(cook.step, steps.length - 1); const s = steps[i];
+  const tKey = m.id + '#' + i;
+  const running = timers.find(t => t.key === tKey && !t.done);
+  $('#cook').innerHTML = `
+    <div class="cook-h"><button class="btn sm" data-act="closecook">✕ Bezár</button><h2>${esc(m.nev)}</h2>${aiOn() ? `${!m.reszletes ? `<button class="btn sm ai-o" data-act="aidetail" data-id="${esc(m.id)}" ${aiBusy['d:' + m.id] ? 'disabled' : ''} aria-label="Részletezd">${aiBusy['d:' + m.id] ? '<span class="spin"></span>' : '🔍'}</button>` : ''}<button class="btn sm ai-o" data-act="ask" data-id="${esc(m.id)}" aria-label="Kérdezz">💬</button>` : ''}</div>
+    <div class="prog"><i style="width:${(i + 1) / steps.length * 100}%"></i></div>
+    <div class="cook-b">
+      <div class="stepno">${i + 1}. lépés / ${steps.length}</div>
+      <div class="steptxt">${esc(s.szoveg)}</div>
+      ${s.perc ? (running ? `<button class="btn timerbtn" data-act="canceltimer" data-id="${running.id}">⏱ Fut: <span data-tleft="${running.id}">${fmtLeft(running.end - Date.now())}</span> · Leállít</button>` : `<button class="btn primary timerbtn" data-act="starttimer" data-step="${i}">⏱ ${s.perc} perces időzítő indítása</button>`) : ''}
+      <div class="tlist" id="cookTimers">${timerListHTML()}</div>
+      <h4 class="sec-title">Hozzávalók (${m.kind === 'snack' ? m.adag + ' adag' : settings.fo + ' fő'})</h4>
+      <div class="card pad" style="padding-top:6px;padding-bottom:6px">${ingList(m)}</div>
+    </div>
+    <div class="cook-f"><button class="btn" data-act="cookprev" ${i === 0 ? 'disabled' : ''}>← Előző</button>
+      ${i < steps.length - 1 ? '<button class="btn primary" data-act="cooknext">Következő →</button>' : '<button class="btn primary" data-act="closecook">Kész ✓</button>'}</div>`;
+}
+async function requestWake(){
+  try{ if('wakeLock' in navigator && document.visibilityState === 'visible' && !wakeLock){ wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } }catch(e){ wakeLock = null; }
+}
+function releaseWake(){ try{ if(wakeLock) wakeLock.release(); }catch(e){} wakeLock = null; }
+
+/* ---------- időzítők ---------- */
+let tickHandle = null;
+function fmtLeft(ms){ const s = Math.max(0, Math.ceil(ms / 1000)); return String(Math.floor(s / 60)).padStart(2,'0') + ':' + String(s % 60).padStart(2,'0'); }
+function startTimer(step){
+  const m = MI[cook.id]; const s = m.lepesek[step]; if(!s || !s.perc) return;
+  ensureAudio();
+  const label = `${m.nev} – ${step + 1}. lépés`;
+  timers.push({id:'t' + Date.now() + Math.random().toString(36).slice(2,6), key:m.id + '#' + step, label, end: Date.now() + s.perc * 60000, done:false});
+  startTick(); renderCook(); renderTimerBar();
+  toast(`⏱ ${s.perc} perces időzítő elindítva`);
+}
+function startTick(){ if(!tickHandle) tickHandle = setInterval(tick, 1000); }
+function tick(){
+  const now = Date.now();
+  for(const t of timers){ if(!t.done && t.end <= now){ t.done = true; alarm(t); } }
+  document.querySelectorAll('[data-tleft]').forEach(e => { const t = timers.find(x => x.id === e.dataset.tleft); if(t) e.textContent = t.done ? 'LEJÁRT' : fmtLeft(t.end - now); });
+  if(!timers.length){ clearInterval(tickHandle); tickHandle = null; }
+  renderTimerBar();
+}
+function timerListHTML(){
+  return timers.map(t => `<div class="titem${t.done ? ' done' : ''}"><span class="tt" data-tleft="${t.id}">${t.done ? 'LEJÁRT' : fmtLeft(t.end - Date.now())}</span><span class="grow small">${esc(t.label)}</span><button class="btn sm" data-act="canceltimer" data-id="${t.id}">${t.done ? 'OK' : 'Leállít'}</button></div>`).join('');
+}
+function cancelTimer(id){
+  timers = timers.filter(t => t.id !== id);
+  if(cook) renderCook(); renderTimerBar();
+  if(!timers.length && tickHandle){ clearInterval(tickHandle); tickHandle = null; }
+}
+function renderTimerBar(){
+  const b = $('#timerbar');
+  if(cook || !timers.length){ b.hidden = true; b.innerHTML = ''; return; }
+  b.hidden = false;
+  const now = Date.now();
+  b.innerHTML = timers.slice(0, 3).map(t => `<button class="${t.done ? 'done' : ''}" data-act="${t.done ? 'canceltimer' : 'timerbar'}" data-id="${t.id}">⏱ ${t.done ? 'Lejárt ✓' : fmtLeft(t.end - now)}</button>`).join('');
+  if(cook){ const c = $('#cookTimers'); if(c) c.innerHTML = timerListHTML(); }
+}
+function ensureAudio(){
+  try{
+    const AC = window.AudioContext || window.webkitAudioContext; if(!AC) return;
+    if(!audioCtx) audioCtx = new AC();
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+  }catch(e){}
+}
+function beep(){
+  try{
+    ensureAudio(); if(!audioCtx) return;
+    const t0 = audioCtx.currentTime;
+    for(let k = 0; k < 4; k++){
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.value = k % 2 ? 660 : 880;
+      g.gain.setValueAtTime(0.0001, t0 + k*0.35); g.gain.exponentialRampToValueAtTime(0.4, t0 + k*0.35 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + k*0.35 + 0.28);
+      o.connect(g).connect(audioCtx.destination); o.start(t0 + k*0.35); o.stop(t0 + k*0.35 + 0.3);
+    }
+  }catch(e){}
+}
+function alarm(t){
+  try{ if(navigator.vibrate) navigator.vibrate([400,150,400,150,400]); }catch(e){}
+  beep();
+  toast('⏰ Lejárt: ' + t.label, 'alarm', 6000);
+  if(cook) renderCook();
+}
+
+/* ---------- toast ---------- */
+function toast(msg, cls, ms){
+  const t = document.createElement('div'); t.className = 'toast' + (cls ? ' ' + cls : ''); t.textContent = msg;
+  const box = $('#toasts'); box.appendChild(t);
+  while(box.children.length > 3) box.firstElementChild.remove();
+  setTimeout(() => t.remove(), ms || 2800);
+}
+
+/* ---------- másolás, mentés ---------- */
+async function copyText(txt, label){
+  try{
+    if(!navigator.clipboard || !window.isSecureContext) throw new Error('no clipboard');
+    await navigator.clipboard.writeText(txt); toast(label + ' a vágólapon ✓');
+  }catch(e){
+    openSheet(label, `<p class="small muted" style="margin-top:0">A böngésző nem engedte az automatikus másolást – jelöld ki és másold ki kézzel.</p><textarea class="copybox" readonly style="min-height:260px">${esc(txt)}</textarea>`);
+    const ta = document.querySelector('#sheet textarea'); if(ta){ ta.focus(); ta.select(); }
+  }
+}
+function listText(){
+  const items = shoppingItems().filter(i => !inPantry(i.nk) && !checks.items[i.key]);
+  let out = `Bevásárlólista – ${plan.ev}/${plan.het}. hét (${settings.fo} fő)\n`;
+  for(const [cat, cn] of CATS){
+    const rows = items.filter(i => i.kategoria === cat); if(!rows.length) continue;
+    out += `\n${cn}:\n` + rows.map(i => `- ${i.nev}${i.hasQty ? ' – ' + fmtQty(i.menny, i.egyseg) : (i.egyseg ? ' – ' + i.egyseg : '')}`).join('\n') + '\n';
+  }
+  return out.trim();
+}
+function feedbackText(){
+  const by = v => Object.values(ratings).filter(r => r.v === v).sort((a,b) => (b.t || 0) - (a.t || 0)).slice(0, 30).map(r => r.nev);
+  const like = by('like'), dis = by('dislike'), cx = by('complex');
+  const recent = history.slice(-3).reverse();
+  let t = `VISSZAJELZÉS AZ ÉTREND APPBÓL (${new Date().toLocaleDateString('hu-HU')})\n`;
+  t += `- Ízlett (hasonló irányba mehetsz): ${like.length ? like.join('; ') : 'nincs még'}\n`;
+  t += `- Nem ízlett (ne tervezd újra, és hasonlót se): ${dis.length ? dis.join('; ') : 'nincs'}\n`;
+  t += `- Túl bonyolult volt (egyszerűbb változat vagy más): ${cx.length ? cx.join('; ') : 'nincs'}\n`;
+  t += `- Az utóbbi 3 hét választásai – 3 héten belül ne ismételd ezeket:\n`;
+  t += recent.length ? recent.map(h => `  ${h.ev}/${h.het}. hét: ${h.valasztott.length ? h.valasztott.join('; ') : '(nem volt választás)'}`).join('\n') : '  (még nincs előzmény)';
+  return t;
+}
+function backupObj(){
+  const data = {}; store.keys().forEach(k => { try{ data[k.slice(P.length)] = JSON.parse(localStorage.getItem(k)); }catch(e){} });
+  if(data.ai) data.ai = Object.assign({}, data.ai, {key:''});   // az API-kulcs soha nem kerül a mentésbe
+  delete data.job;
+  return {app:'etrend', verzio:APP_VERSION, datum:new Date().toISOString(), data};
+}
+function downloadBackup(){
+  const blob = new Blob([JSON.stringify(backupObj(), null, 1)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `etrend-mentes-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast('Mentés letöltve');
+}
+function restoreBackup(txt){
+  const o = JSON.parse(txt);
+  if(!o || o.app !== 'etrend' || typeof o.data !== 'object') throw new Error('Ez nem étrend-mentés.');
+  const keepKey = ai.key;
+  store.keys().forEach(k => localStorage.removeItem(k));
+  for(const k in o.data) store.set(k, o.data[k]);
+  if(keepKey){ const a = store.get('ai', {}) || {}; a.key = keepKey; store.set('ai', a); }
+  location.reload();
+}
+
+/* ---------- téma ---------- */
+function applyTheme(){
+  const r = document.documentElement;
+  if(settings.tema === 'light' || settings.tema === 'dark') r.setAttribute('data-theme', settings.tema); else r.removeAttribute('data-theme');
+}
+
+/* ======================================================================
+   ✨ CLAUDE AI – közvetlen hívás a telefonról, saját API-kulccsal.
+   A kulcs csak ezen az eszközön van (localStorage "etrend.ai"),
+   a repóba, a mentésbe és az exportba nem kerül bele.
+   ====================================================================== */
+const MODELS = [
+  ['claude-sonnet-5-5', 'Sonnet 5.5', 'kiegyensúlyozott, ajánlott', 2, 10],
+  ['claude-opus-5-5', 'Opus 5.5', 'legjobb minőség, kb. kétszeres ár', 4, 20],
+  ['claude-haiku-5-5', 'Haiku 5.5', 'leggyorsabb, töredék ár', 0.10, 0.50]
+];
+const WEB_SEARCH_USD = 0.01;
+const DEFAULT_RULES = [
+  '- Lazac legfeljebb heti 1 étkezésben, és csak páros héten. Olcsóbb omega-3-források: makréla, szardínia, hering, pisztráng, hekk/tőkehal, lenmag, chia, dió.',
+  '- Ízvilág: páros héten mediterrán / közel-keleti, páratlan héten ázsiai / skandináv / magyar újragondolva.',
+  '- Hétköznap max. 30–40 perces ételek, hétvégén lehet összetettebb.',
+  '- Futónapokon legyen elég összetett szénhidrát.'
+].join('\n');
+const WISH = {
+  gyors: ['⚡ Gyorsabb', 'gyorsabb legyen (max. 20 perc)'],
+  feherje: ['💪 Több fehérje', 'több fehérje legyen benne'],
+  kamra: ['🧊 Kamrából', 'főleg abból készüljön, ami otthon van'],
+  olcso: ['💸 Olcsóbb', 'olcsóbb alapanyagokból'],
+  hal: ['🐟 Halas', 'halas étel legyen'],
+  noveny: ['🌱 Növényi', 'növényi alapú legyen'],
+  konnyu: ['🍃 Könnyebb', 'könnyebb, kevésbé nehéz étel']
+};
+const ASK_CHIPS = ['Mivel helyettesíthető egy-egy hozzávaló?', 'Mi készíthető elő belőle előre?', 'Meddig és hogyan tárolható?', 'Hogyan lehetne több benne a fehérje?'];
+const MONTHS = ['január','február','március','április','május','június','július','augusztus','szeptember','október','november','december'];
+
+let ai = Object.assign({key:'', model:'claude-sonnet-5-5', linkModel:'claude-haiku-5-5', endpoint:'https://api.anthropic.com', customModel:'', conc:3, keret:100}, store.get('ai', {}));
+let profile = Object.assign({nem:'férfi', kor:'', magassag:'', suly:'', futas:'1–2', cel:'szinten tartás', bolt:'Lidl (Budapest)', kerulendo:'', kedvelt:'', szabalyok:DEFAULT_RULES, futonapok:[]}, store.get('profile', {}));
+let usage = store.get('usage', {});
+let job = store.get('job', null);
+let jobRunning = false, jobCtl = null, jobLive = {chars:0, wait:0, note:''};
+let aiBusy = {};
+let swapUI = {slot:null, wish:[], text:'', fresh:[]};
+let askState = null;
+let genOpt = {target:null, extra:'', links:true};
+let rlUntil = 0;
+
+const aiOn = () => !!ai.key;
+const mainModel = () => String(ai.customModel || '').trim() || ai.model;
+function modelInfo(id){ const s = String(id || '').toLowerCase(); return MODELS.find(m => m[0] === s) || MODELS.find(m => s.includes(m[1].split(' ')[0].toLowerCase())) || MODELS[0]; }
+const usd = n => '$' + (n > 0 && n < 0.1 ? n.toFixed(3) : (n || 0).toFixed(2)).replace('.', ',');
+function isoDate(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function isoNow(){
+  const d = new Date(), o = -d.getTimezoneOffset(), p = n => String(Math.floor(Math.abs(n))).padStart(2, '0');
+  return `${isoDate(d)}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}${o >= 0 ? '+' : '-'}${p(o / 60)}:${p(o % 60)}`;
+}
+
+/* ---------- költségkövetés (becslés a usage mezőkből) ---------- */
+function monthKey(){ return isoDate(new Date()).slice(0, 7); }
+function monthUsage(){ return usage[monthKey()] || {usd:0, calls:0, searches:0}; }
+function trackUsage(model, u){
+  if(!u) return 0;
+  const [, , , pin, pout] = modelInfo(model);
+  const s = (u.server_tool_use && u.server_tool_use.web_search_requests) || 0;
+  const cost = ((u.input_tokens || 0) * pin + (u.cache_creation_input_tokens || 0) * pin * 1.25 + (u.cache_read_input_tokens || 0) * pin * 0.1 + (u.output_tokens || 0) * pout) / 1e6 + s * WEB_SEARCH_USD;
+  const k = monthKey(), m = usage[k] || {usd:0, calls:0, searches:0};
+  m.usd += cost; m.calls++; m.searches += s; usage[k] = m;
+  Object.keys(usage).sort().slice(0, -6).forEach(x => delete usage[x]);
+  store.set('usage', usage);
+  return cost;
+}
+
+/* ---------- hibák ---------- */
+class AiError extends Error{ constructor(msg, o){ super(msg); Object.assign(this, {status:0, type:'', retry:false, retryAfter:null}, o || {}); } }
+function aiErrText(status, type, msg){
+  msg = msg || '';
+  if(status === 401 || type === 'authentication_error') return 'Érvénytelen API-kulcs – a Több fülön ellenőrizhető.';
+  if(/credit balance|billing|purchase credits/i.test(msg)) return 'Nincs elérhető API-kredit. A Max-kreditet a claude.ai → Beállítások → Billing → API credits → „Link organization” résznél kell összekötni a Console-szervezettel (vagy elfogyott a havi keret).';
+  if(status === 403 || type === 'permission_error') return 'A kulcsnak nincs jogosultsága ehhez' + (msg ? ': ' + msg : '.');
+  if(status === 404 || type === 'not_found_error') return 'Nem található modell vagy végpont' + (msg ? ` (${msg})` : '') + ' – a Több fülön másik modell választható.';
+  if(status === 413) return 'Túl nagy kérés.';
+  if(status === 429 || type === 'rate_limit_error') return 'Sebességkorlát (rate limit) – rövid várakozás után újrapróbálom.';
+  if(status === 529 || type === 'overloaded_error') return 'A Claude most túlterhelt – újrapróbálom.';
+  if(status >= 500) return `Szerverhiba (${status}) – újrapróbálom.`;
+  if(status === 400) return 'Hibás kérés: ' + msg;
+  return msg || 'Ismeretlen hiba.';
+}
+function abortError(){ const e = new Error('Megszakítva'); e.name = 'AbortError'; return e; }
+function sleep(ms, signal){
+  return new Promise((res, rej) => {
+    if(signal && signal.aborted) return rej(abortError());
+    const t = setTimeout(res, ms);
+    if(signal) signal.addEventListener('abort', () => { clearTimeout(t); rej(abortError()); }, {once:true});
+  });
+}
+
+/* ---------- Messages API, streaming ---------- */
+async function callClaude(o){
+  if(!ai.key) throw new AiError('Nincs beállítva Claude API-kulcs (Több → Claude AI).', {type:'nokey'});
+  const body = {model:o.model || mainModel(), max_tokens:o.max_tokens || 2000, stream:true, messages:o.messages};
+  if(o.system) body.system = o.system;
+  if(o.tools) body.tools = o.tools;
+  if(o.tool_choice) body.tool_choice = o.tool_choice;
+  // saját megszakító: a külső (felhasználói) megszakítás + őrkutya, ha 90 mp-ig nem jön adat
+  const ctl = new AbortController();
+  let timedOut = false, wd = null;
+  const kick = () => { clearTimeout(wd); wd = setTimeout(() => { timedOut = true; ctl.abort(); }, 90000); };
+  const onOuter = () => ctl.abort();
+  if(o.signal){ if(o.signal.aborted) throw abortError(); o.signal.addEventListener('abort', onOuter, {once:true}); }
+  const cleanup = () => { clearTimeout(wd); if(o.signal) o.signal.removeEventListener('abort', onOuter); };
+  const toErr = e => (timedOut ? new AiError('Nem jött válasz 90 másodpercig – újrapróbálom.', {type:'timeout', retry:true}) : e);
+  kick();
+  let res;
+  try{
+    res = await fetch(String(ai.endpoint || 'https://api.anthropic.com').replace(/\/+$/, '') + '/v1/messages', {
+      method:'POST', signal:ctl.signal,
+      headers:{'content-type':'application/json', 'x-api-key':ai.key, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify(body)
+    });
+  }catch(e){
+    cleanup();
+    if(timedOut) throw toErr(e);
+    if(e.name === 'AbortError') throw e;
+    throw new AiError('Nem érhető el a Claude API (nincs internet, vagy megszakadt a kapcsolat).', {type:'network', retry:true});
+  }
+  if(!res.ok){
+    cleanup();
+    let j = null; try{ j = await res.json(); }catch(e){}
+    const type = (j && j.error && j.error.type) || '', msg = (j && j.error && j.error.message) || '';
+    const retry = [408, 409, 429, 500, 502, 503, 504, 529].includes(res.status) || type === 'overloaded_error';
+    throw new AiError(aiErrText(res.status, type, msg), {status:res.status, type, retry, retryAfter:num(res.headers.get('retry-after'))});
+  }
+  const msg = {content:[], stop_reason:null, usage:{}}, partial = {};
+  let chars = 0, ended = false, buf = '';
+  const onEvent = ev => {
+    if(ev.type === 'message_start') Object.assign(msg.usage, (ev.message && ev.message.usage) || {});
+    else if(ev.type === 'content_block_start'){
+      const b = Object.assign({}, ev.content_block); msg.content[ev.index] = b;
+      if(b.type === 'tool_use' || b.type === 'server_tool_use') partial[ev.index] = '';
+      if(b.type === 'text') b.text = b.text || '';
+    }
+    else if(ev.type === 'content_block_delta'){
+      const b = msg.content[ev.index], d = ev.delta || {};
+      if(!b) return;
+      if(d.type === 'text_delta'){ b.text += d.text; chars += d.text.length; o.onProgress && o.onProgress(chars, b.text); }
+      else if(d.type === 'input_json_delta'){ partial[ev.index] += d.partial_json; chars += d.partial_json.length; o.onProgress && o.onProgress(chars, null); }
+    }
+    else if(ev.type === 'content_block_stop'){
+      if(partial[ev.index] != null){ const b = msg.content[ev.index]; try{ b.input = partial[ev.index] ? JSON.parse(partial[ev.index]) : {}; }catch(e){ b.input = null; } }
+    }
+    else if(ev.type === 'message_delta'){ if(ev.delta && ev.delta.stop_reason) msg.stop_reason = ev.delta.stop_reason; if(ev.usage) Object.assign(msg.usage, ev.usage); }
+    else if(ev.type === 'message_stop') ended = true;
+    else if(ev.type === 'error'){ const er = ev.error || {}; throw new AiError(aiErrText(0, er.type, er.message), {type:er.type, retry:['overloaded_error', 'api_error', 'rate_limit_error'].includes(er.type)}); }
+  };
+  try{
+    const reader = res.body.getReader(), dec = new TextDecoder();
+    for(;;){
+      const {done, value} = await reader.read();
+      kick();
+      if(value) buf += dec.decode(value, {stream:true}).replace(/\r/g, '');
+      let i;
+      while((i = buf.indexOf('\n\n')) >= 0){
+        const raw = buf.slice(0, i); buf = buf.slice(i + 2);
+        const data = raw.split('\n').filter(l => l.startsWith('data:')).map(l => l.slice(5).trim()).join('');
+        if(!data) continue;
+        let ev; try{ ev = JSON.parse(data); }catch(e){ continue; }
+        onEvent(ev);
+      }
+      if(done) break;
+    }
+  }catch(e){
+    cleanup();
+    if(timedOut) throw toErr(e);
+    if(e instanceof AiError || e.name === 'AbortError') throw e;
+    throw new AiError('A kapcsolat megszakadt a válasz közben.', {type:'network', retry:true});
+  }
+  cleanup();
+  trackUsage(body.model, msg.usage);
+  if(!ended && !msg.stop_reason) throw new AiError('A válasz félbeszakadt.', {type:'network', retry:true});
+  msg.content = msg.content.filter(Boolean);
+  if(msg.stop_reason === 'refusal') throw new AiError('A Claude ezt a kérést nem teljesítette.', {type:'refusal'});
+  return msg;
+}
+async function withRetry(fn, o = {}){
+  const tries = o.tries || 5; let delay = 3000;
+  for(let k = 0; ; k++){
+    const gate = rlUntil - Date.now();
+    if(gate > 0){ o.onWait && o.onWait(gate); await sleep(gate, o.signal); }
+    try{ return await fn(k); }
+    catch(e){
+      if(e.name === 'AbortError' || !e.retry || k >= tries - 1) throw e;
+      const wait = e.retryAfter ? e.retryAfter * 1000 : e.status === 429 ? 15000 * (k + 1) : delay * (1 + Math.random() * 0.4);
+      if(e.status === 429) rlUntil = Math.max(rlUntil, Date.now() + wait);
+      o.onWait && o.onWait(wait, e);
+      await sleep(wait, o.signal);
+      delay = Math.min(delay * 2, 60000);
+    }
+  }
+}
+/* kötelező eszközhívás (tool_use) → biztosan géppel olvasható JSON */
+function callTool(o, name, validate){
+  return withRetry(async k => {
+    const msg = await callClaude(Object.assign({}, o, {max_tokens:Math.min(8000, (o.max_tokens || 4000) + k * 1500), tool_choice:{type:'tool', name}}));
+    if(msg.stop_reason === 'max_tokens') throw new AiError('A válasz túl hosszú lett – újrapróbálom nagyobb kerettel.', {type:'max_tokens', retry:true});
+    const b = msg.content.find(c => c.type === 'tool_use' && c.name === name);
+    if(!b || !b.input || typeof b.input !== 'object') throw new AiError('A Claude nem adott értelmezhető választ – újrapróbálom.', {type:'bad_output', retry:true});
+    const err = validate && validate(b.input);
+    if(err) throw new AiError(err, {type:'bad_output', retry:true});
+    return b.input;
+  }, {signal:o.signal, onWait:o.onWait, tries:o.tries});
+}
+
+/* ---------- eszköz-sémák ---------- */
+const S = {
+  str: d => d ? {type:'string', description:d} : {type:'string'},
+  int: d => d ? {type:'integer', description:d} : {type:'integer'},
+  num: () => ({type:'number'}),
+  bool: () => ({type:'boolean'}),
+  arr: items => ({type:'array', items}),
+  en: vals => ({type:'string', enum:vals}),
+  obj: (properties, required) => ({type:'object', properties, required:required || Object.keys(properties)})
+};
+const SCH_FLAGS = {konyha:S.str(), feherjeforras:S.str(), ido_perc:S.int(), nehezseg:S.en(['konnyu', 'kozepes', 'osszetett']), fermentalt:S.bool(), maradek_holnapra:S.bool(), futonapra:S.bool()};
+const SCH_SK = S.obj(Object.assign({nev:S.str(), rovid:S.str('Max. 15 szó: a koncepció és a fő összetevők'), ajanlott:S.bool()}, SCH_FLAGS));
+const SCH_ING = S.obj({nev:S.str(), menny:S.num(), egyseg:S.str('g, ml, db, ek, tk, gerezd, csokor, szelet, doboz…'), kategoria:S.en(['zoldseg', 'feherje', 'tejtermek', 'gabona', 'egyeb'])});
+const SCH_STEP = S.obj({szoveg:S.str(), perc:S.int('Várakozás vagy főzési idő percben, ha van')}, ['szoveg']);
+const SCH_DETAIL = {nev:S.str(), miert:S.str('1 mondat: miért jó longevity/energia szempontból'), adag:S.int(), feherje_g:S.num(), kcal:S.num(), rost_g:S.num(), nova:S.int('1–4'), nutriscore_becsult:S.en(['A', 'B', 'C', 'D', 'E']), koltseg_ft:S.int('A teljes receptre, becsült Lidl-áron'), novenyek:S.arr(S.str()), alapanyagok:S.arr(SCH_ING), lepesek:S.arr(SCH_STEP)};
+const TOOL_VAZ = {name:'het_vaz', description:'A hét váza: mind a 7 napra reggeli, ebéd, vacsora; étkezésenként pontosan 3 opció, ebből 1 ajánlott.', input_schema:S.obj({
+  tema:S.str('pl. "Páros hét – mediterrán / közel-keleti"'),
+  napok:S.arr(S.obj({nap:S.en(DAYS.map(d => d[0])), reggeli:S.arr(SCH_SK), ebed:S.arr(SCH_SK), vacsora:S.arr(SCH_SK)})),
+  meal_prep:S.obj({ido_perc:S.int(), lepesek:S.arr(S.obj({szoveg:S.str(), tarolas:S.str(), felhasznalas:S.str()}))}),
+  futonap_tipp:S.str('Melyik ajánlott opciót érdemes futás előtt/után enni, és miért.'),
+  megjegyzesek:S.arr(S.str())
+})};
+const TOOL_EXTRA = {name:'extra_vaz', description:'Tartalék ételek és snackek váza.', input_schema:S.obj({
+  tartalekok:S.arr(S.obj(Object.assign({etkezes:S.en(['reggeli', 'ebed', 'vacsora']), nev:S.str(), rovid:S.str('Max. 15 szó')}, SCH_FLAGS))),
+  snackek:S.arr(S.obj({nev:S.str(), rovid:S.str('Max. 15 szó'), ido_perc:S.int(), eltarthatosag:S.str(), tarolas:S.str(), adag:S.int('Hány adag lesz egy elkészítésből')}))
+})};
+const TOOL_DET = {name:'etelek_reszletei', description:'A megadott ételek teljes receptje.', input_schema:S.obj({
+  etelek:S.arr(S.obj(Object.assign({id:S.str()}, SCH_DETAIL, {eltarthatosag:S.str('Csak snacknél'), tarolas:S.str('Csak snacknél')}), ['id'].concat(Object.keys(SCH_DETAIL))))
+})};
+const TOOL_ALT = {name:'alternativak', description:'3 új ételötlet teljes recepttel.', input_schema:S.obj({etelek:S.arr(S.obj(Object.assign({}, SCH_DETAIL, SCH_FLAGS)))})};
+const TOOL_RESZL = {name:'reszletes_recept', description:'Részletesebb, kezdőbarát lépések, tippek és helyettesítések.', input_schema:S.obj({lepesek:S.arr(SCH_STEP), tippek:S.arr(S.str()), helyettesitesek:S.arr(S.str())}, ['lepesek', 'tippek', 'helyettesitesek'])};
+const TOOL_LINK = {name:'link_valasz', description:'A legjobb talált recept vagy videó, vagy üres url, ha nincs megfelelő találat.', input_schema:S.obj({url:S.str('Pontosan egy, a webkeresés találatai között szereplő URL, vagy üres szöveg'), cim:S.str('„Oldal neve – recept címe”')}, ['url'])};
+
+/* ---------- promptok ---------- */
+function targets(){
+  const w = num(profile.suly), h = num(profile.magassag), a = num(profile.kor);
+  if(w && h && a){
+    const bmr = 10 * w + 6.25 * h - 5 * a + (profile.nem === 'nő' ? -161 : 5), r = x => Math.round(x / 50) * 50;
+    let kmin = r(bmr * 1.375), kmax = r(bmr * 1.5), fmin = 1.4, fmax = 1.8;
+    if(profile.cel === 'izomépítés'){ kmin += 250; kmax += 300; fmin = 1.6; fmax = 2.2; }
+    if(profile.cel === 'fogyás'){ kmin -= 400; kmax -= 400; fmin = 1.6; fmax = 2.0; }
+    return {feherje_min:Math.round(w * fmin), feherje_max:Math.round(w * fmax), kcal_min:kmin, kcal_max:kmax};
+  }
+  return plan && !plan.demo ? Object.assign({}, plan.napi_cel) : {feherje_min:81, feherje_max:104, kcal_min:2100, kcal_max:2300};
+}
+const BASE_RULES = `ALAPELVEK
+- Longevity, Kék Zóna / mediterrán minták: sok zöldség, hüvelyes, teljes kiőrlésű gabona, olívaolaj, diófélék, halak és omega-3, fermentált élelmiszerek, minimális feldolgozottság.
+- Stabil vércukorszint (fehérje + rost + zsír minden étkezésben), B-vitaminok, magnézium, polifenolok.
+- Heti legalább 30 különböző növény, naponta legalább 1 fermentált étel, szezonális alapanyagok.
+- Kerülendő: ultra-feldolgozott élelmiszerek, hozzáadott cukor, finomított szénhidrát és olaj, sok feldolgozott hús, alkohol, cukros italok, mesterséges édesítők.
+- A héten belül ne ismétlődjenek ételek.`;
+function systemPrompt(){
+  const t = targets(), p = profile;
+  const who = [p.nem, p.kor && p.kor + ' éves', p.magassag && p.magassag + ' cm', p.suly && p.suly + ' kg'].filter(Boolean).join(', ');
+  return `Magyar nyelvű, longevity szemléletű étrendtervező vagy egy személyes telefonos étrend-appban. Mindig magyarul, tömören írsz. Ha eszközt (tool) kapsz a válaszhoz, a választ pontosan annak sémája szerint adod meg.
+
+A FELHASZNÁLÓ
+- ${who || 'felnőtt'}${p.futas ? `, heti ${p.futas} futás` : ''}. Cél: ${p.cel}.
+- Napi cél: fehérje ${t.feherje_min}–${t.feherje_max} g (fő étkezésenként kb. 25–35 g), energia ${t.kcal_min}–${t.kcal_max} kcal.
+- ${settings.fo} főre főz; minden recept 2 adagra szól (az app skáláz).
+- Bolt: ${p.bolt || 'Lidl'} – az ott jellemzően kapható alapanyagokat használd. Heti élelmiszerkeret: kb. ${fmtFt(settings.keret)}.${p.kerulendo ? '\n- Nem eszi / kerülendő: ' + p.kerulendo : ''}${p.kedvelt ? '\n- Szereti: ' + p.kedvelt : ''}
+
+${BASE_RULES}
+
+SAJÁT SZABÁLYOK
+${p.szabalyok || '-'}
+
+ADATFORMÁTUM
+- "feherje_g", "kcal", "rost_g": 1 adagra. Az "alapanyagok" mennyiségei és a "koltseg_ft": a teljes receptre ("adag" adagra), becsült magyar Lidl-árakon.
+- "nova": 1–4 (NOVA feldolgozottság), "nutriscore_becsult": A–E (becslés).
+- "nehezseg": konnyu | kozepes | osszetett.
+- "kategoria": zoldseg (zöldség, gyümölcs, friss zöldfűszer) | feherje (hús, hal, tojás, tofu) | tejtermek (tejtermék és fermentált: kefir, joghurt, kimchi, savanyú káposzta, miso) | gabona (gabona, hüvelyes, kenyér, tészta) | egyeb (olaj, mag, dió, fűszer, szósz).
+- Alapanyagnevek egységesen, alapalakban, hogy a bevásárlólista összevonható legyen: "tojás" (db), "vöröshagyma" (db), "fokhagyma" (gerezd), "olívaolaj" (ek), "citrom" (db); egyébként lehetőleg g vagy ml. Pontosítás zárójelben: "lenmag (darált)".
+- "lepesek": 3–6 tömör lépés; ahol várakozás vagy főzési idő van, adj "perc" mezőt (egész szám).
+- URL-t soha ne találj ki.`;
+}
+function sys(ctx){
+  const blocks = [{type:'text', text:systemPrompt()}];
+  if(ctx) blocks.push({type:'text', text:ctx});
+  blocks[blocks.length - 1].cache_control = {type:'ephemeral'};   // prompt caching: a sok részletező hívás olcsóbb
+  return blocks;
+}
+function feedbackCtx(){
+  const by = v => Object.values(ratings).filter(r => r.v === v).sort((a, b) => (b.t || 0) - (a.t || 0)).slice(0, 25).map(r => r.nev);
+  const like = by('like'), dis = by('dislike'), cx = by('complex');
+  const recent = history.slice(-3).filter(h => h.valasztott && h.valasztott.length);
+  const L = [];
+  if(like.length) L.push('Ízlett (ebbe az irányba lehet menni): ' + like.join('; '));
+  if(dis.length) L.push('Nem ízlett (ne tervezd újra, hasonlót se): ' + dis.join('; '));
+  if(cx.length) L.push('Túl bonyolult volt (egyszerűbbet): ' + cx.join('; '));
+  if(recent.length) L.push('Az utóbbi hetekben választott ételek (3 héten belül ne ismételd): ' + recent.map(h => h.valasztott.join('; ')).join('; '));
+  if(pantry.length) L.push('Otthon van, érdemes felhasználni: ' + pantry.join(', '));
+  return L.length ? '\nVISSZAJELZÉS AZ APPBÓL\n- ' + L.join('\n- ') : '';
+}
+function recipeCtx(m){
+  return {nev:m.nev, adag:m.adag, ido_perc:m.ido_perc, alapanyagok:m.alapanyagok.map(i => i.nev + (i.menny != null ? ` ${i.menny} ${i.egyseg}` : '')), lepesek:m.lepesek.map(s => s.szoveg + (s.perc ? ` (${s.perc} perc)` : ''))};
+}
+
+/* ---------- heti generálás (váz → részletek → linkek), folytatható ---------- */
+function weekTargets(){
+  const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+  const n = new Date(d); n.setDate(n.getDate() + 7);
+  return [d, n].map(x => Object.assign({kezdo:isoDate(x)}, isoWeek(x)));
+}
+function defaultTarget(){
+  const [cur] = weekTargets();
+  if(new Date().getDay() === 0) return 1;
+  if(plan && !plan.demo && plan.ev === cur.ev && plan.het === cur.het) return 1;
+  return 0;
+}
+function needNewWeek(){
+  if(!plan || plan.demo) return true;
+  const [cur] = weekTargets(), pw = plan.ev * 100 + plan.het, cw = cur.ev * 100 + cur.het;
+  return pw < cw || (pw === cw && new Date().getDay() === 0);
+}
+function saveJob(){ if(job) store.set('job', job); else store.del('job'); }
+function startJob(){
+  const t = weekTargets()[genOpt.target == null ? defaultTarget() : genOpt.target];
+  job = {id:Date.now(), phase:'vaz', target:t, model:mainModel(), extra:genOpt.extra.trim(), links:genOpt.links, futonapok:[...profile.futonapok],
+         cost0:monthUsage().usd, vaz:null, items:null, chunkList:[], chunks:{}, linkQueue:[], linksDone:{}, error:null};
+  saveJob(); closeSheet(); ui.tab = 'het'; saveUI(); renderAll(); window.scrollTo(0, 0);
+  runJob();
+}
+async function runJob(){
+  if(!job || jobRunning) return;
+  if(!aiOn()){ job.error = 'Nincs API-kulcs (Több → Claude AI).'; saveJob(); renderAll(); return; }
+  jobRunning = true; jobCtl = new AbortController(); job.error = null; saveJob(); requestWake(); refreshJob();
+  const signal = jobCtl.signal, iv = setInterval(liveJob, 1000);
+  try{
+    if(job.phase === 'vaz'){ await jobSkeleton(signal); job.phase = 'reszletek'; saveJob(); refreshJob(); }
+    if(job.phase === 'reszletek'){ await jobDetails(signal); assembleJob(); job.phase = job.links ? 'linkek' : 'kesz'; saveJob(); renderAll(); }
+    if(job.phase === 'linkek'){ await jobLinks(signal); job.phase = 'kesz'; saveJob(); }
+    if(job.phase === 'kesz') finishJob();
+  }catch(e){
+    if(job){ job.error = e.name === 'AbortError' ? null : (e.message || String(e)); saveJob(); }
+  }finally{
+    clearInterval(iv);
+    jobRunning = false; jobCtl = null; jobLive = {chars:0, wait:0, note:''};
+    if(job && job.skipLinks) finishJob();
+    if(!cook) releaseWake();
+    renderAll();
+  }
+}
+function cancelJob(){ const c = jobCtl; job = null; saveJob(); if(c) c.abort(); renderAll(); toast('Generálás megszakítva'); }
+function finishJob(){
+  if(!job) return;
+  const cost = Math.max(0, monthUsage().usd - (job.cost0 || 0)), t = job.target;
+  job = null; saveJob();
+  toast(`✨ Kész a ${t.ev}/${t.het}. hét! Becsült költség: ${usd(cost)}`, null, 5000);
+}
+async function jobSkeleton(signal){
+  const t = job.target, even = t.het % 2 === 0;
+  const end = new Date(t.kezdo + 'T12:00:00'); end.setDate(end.getDate() + 6);
+  const runDays = job.futonapok.map(dayName).join(', ');
+  const fb = feedbackCtx();
+  const onProgress = c => { jobLive.chars = c; liveJob(); };
+  const onWait = w => { jobLive.wait = Date.now() + w; liveJob(true); };
+  if(!job.vaz){
+    jobLive.note = 'A hét váza készül…';
+    const A = await callTool({system:sys(), model:job.model, max_tokens:7000, signal, onProgress, onWait, tools:[TOOL_VAZ], messages:[{role:'user', content:
+`Tervezd meg a(z) ${t.ev}/${t.het}. hét étrendjének vázát (${t.kezdo} hétfő – ${isoDate(end)} vasárnap). Ez ${even ? 'PÁROS' : 'PÁRATLAN'} ISO-hét, hónap: ${MONTHS[new Date(t.kezdo + 'T12:00:00').getMonth()]}.
+${runDays ? 'Futónapok: ' + runDays + '.' : 'Futónapok nincsenek megadva: a "futonapra" jelzést a szénhidrátdúsabb, futás előtt/után jó opciókra tedd.'}
+- Mind a 7 napra reggeli, ebéd, vacsora, étkezésenként pontosan 3 opció; ebből pontosan 1 legyen "ajanlott": true (a legjobb választás). Az opciók nehézségben és fehérjeforrásban legyenek változatosak.
+- Az ajánlott opciók egy snackkel együtt adják ki a napi fehérjecélt, és a heti költségük férjen bele a keretbe.
+- A 63 étel mind különböző. Heti min. 30 különböző növény, naponta min. 1 fermentált étel. Ha egy étel maradéka másnap felhasználható ("maradek_holnapra"), arra a következő nap egyik opciója építhet.
+- A meal prep (max. 2 óra, vasárnap/hétfő) azt készítse elő, ami a héten többször kell.
+- A megjegyzésekben jelezd a hétre eső magyarországi ünnepeket, különleges alkalmakat illő ételötlettel, és adj 1–2 heti tippet.
+- A "rovid" mező max. 15 szó – a részleteket később kérem.${fb}${job.extra ? '\nKÜLÖNLEGES KÉRÉS ERRE A HÉTRE: ' + job.extra : ''}`}]}, 'het_vaz', validateVaz);
+    job.vaz = {A}; saveJob(); refreshJob();
+  }
+  if(!job.vaz.B){
+    jobLive.note = 'Tartalékok és snackek…'; jobLive.chars = 0;
+    const names = job.vaz.A.napok.flatMap(d => MEALS.flatMap(([m]) => (d[m] || []).map(o => o.nev)));
+    const B = await callTool({system:sys(), model:job.model, max_tokens:3500, signal, onProgress, onWait, tools:[TOOL_EXTRA], messages:[{role:'user', content:
+`A(z) ${t.ev}/${t.het}. hét ételei már megvannak: ${names.join('; ')}.
+Most add hozzá:
+- 12 tartalék ételt (4 reggeli, 4 ebéd, 4 vacsora), amelyek a fentiektől eltérnek és cserére jók (legyen köztük gyors, olcsó, kamrabarát is);
+- 10 étvágycsökkentő snacket, ami kiváltja a csokit és a chipset; legyen köztük több napig eltartható és nagyon egyszerű is.${fb}`}]}, 'extra_vaz', v => (Array.isArray(v.tartalekok) && v.tartalekok.length >= 3 && Array.isArray(v.snackek) && v.snackek.length >= 3) ? null : 'Kevés tartalék vagy snack.');
+    job.vaz.B = B;
+    buildItems(); saveJob(); refreshJob();
+  }
+}
+function validateVaz(v){
+  if(!Array.isArray(v.napok)) return 'Hiányoznak a napok.';
+  const seen = new Set(v.napok.map(d => normDay(d.nap)).filter(Boolean));
+  if(seen.size < 7) return `Nem mind a 7 nap van meg (${seen.size}).`;
+  for(const d of v.napok) for(const [m] of MEALS) if(!Array.isArray(d[m]) || !d[m].length) return `Hiányzó étkezés: ${d.nap} ${m}.`;
+  return null;
+}
+function buildItems(){
+  const items = [], A = job.vaz.A, B = job.vaz.B, done = new Set();
+  for(const d of A.napok){
+    const nap = normDay(d.nap); if(!nap || done.has(nap)) continue; done.add(nap);
+    for(const [m] of MEALS){
+      const opts = (d[m] || []).slice(0, 3); let rec = opts.findIndex(o => bool(o.ajanlott)); if(rec < 0) rec = 0;
+      opts.forEach((o, i) => items.push(Object.assign({}, o, {id:`${nap}-${m}-${i + 1}`, kind:'etel', nap, etkezes:m, ajanlott:i === rec})));
+    }
+  }
+  const cnt = {};
+  for(const o of B.tartalekok || []){ const m = normMeal(o.etkezes); if(!m) continue; cnt[m] = (cnt[m] || 0) + 1; items.push(Object.assign({}, o, {id:`tartalek-${m}-${cnt[m]}`, kind:'tartalek', etkezes:m, ajanlott:false})); }
+  (B.snackek || []).forEach((o, i) => items.push(Object.assign({}, o, {id:`snack-${i + 1}`, kind:'snack', ajanlott:false})));
+  job.items = items;
+  const chunks = [];
+  for(const [nap] of DAYS) for(const [m, mn] of MEALS){
+    const ids = items.filter(x => x.kind === 'etel' && x.nap === nap && x.etkezes === m).map(x => x.id);
+    if(ids.length) chunks.push({key:`${nap}-${m}`, label:`${dayName(nap)} – ${mn.toLowerCase()}`, ids});
+  }
+  for(const [m, mn] of MEALS){
+    const ids = items.filter(x => x.kind === 'tartalek' && x.etkezes === m).map(x => x.id);
+    for(let i = 0; i < ids.length; i += 4) chunks.push({key:`tartalek-${m}-${i / 4 + 1}`, label:`Tartalék ${mn.toLowerCase()}`, ids:ids.slice(i, i + 4)});
+  }
+  const sn = items.filter(x => x.kind === 'snack').map(x => x.id);
+  for(let i = 0; i < sn.length; i += 5) chunks.push({key:`snack-${i / 5 + 1}`, label:'Snackek', ids:sn.slice(i, i + 5)});
+  job.chunkList = chunks;
+}
+function weekCtx(){
+  const L = ['A HÉT VÁZA (kontextus – a maradékok, a meal prep és az ismétlés elkerülése miatt):'];
+  for(const [nap, dn] of DAYS) L.push(`${dn} – ` + MEALS.map(([m, mn]) => mn + ': ' + job.items.filter(x => x.kind === 'etel' && x.nap === nap && x.etkezes === m).map(x => (x.ajanlott ? '⭐' : '') + x.nev).join(' / ')).join('; '));
+  const mp = job.vaz.A.meal_prep;
+  if(mp && Array.isArray(mp.lepesek)) L.push('Meal prep: ' + mp.lepesek.map(s => s.szoveg).join(' | '));
+  return L.join('\n');
+}
+function compactSk(x){
+  const o = {id:x.id, nev:x.nev, rovid:x.rovid};
+  for(const k of ['ajanlott', 'feherjeforras', 'konyha', 'ido_perc', 'nehezseg', 'fermentalt', 'futonapra', 'maradek_holnapra', 'eltarthatosag', 'tarolas', 'adag']) if(x[k] != null && x[k] !== '' && !(k === 'ajanlott' && !x[k])) o[k] = x[k];
+  return o;
+}
+function mergeDetail(sk, d){
+  d = d || {};
+  const o = Object.assign({}, d, {id:sk.id, nev:sk.nev || d.nev, ajanlott:!!sk.ajanlott, link:null});
+  if(sk.kind === 'etel'){ o.nap = sk.nap; o.etkezes = sk.etkezes; }
+  else if(sk.kind === 'tartalek'){ delete o.nap; o.etkezes = sk.etkezes; }
+  else { delete o.nap; delete o.etkezes; }
+  for(const k of ['konyha', 'feherjeforras', 'eltarthatosag', 'tarolas']) if(!o[k] && sk[k]) o[k] = sk[k];
+  for(const k of ['fermentalt', 'maradek_holnapra', 'futonapra', 'nehezseg', 'ido_perc']) if(sk[k] != null) o[k] = sk[k];
+  if(sk.kind === 'snack' && !num(o.adag)) o.adag = num(sk.adag) || 1;
+  if(!num(o.adag)) o.adag = 2;
+  return o;
+}
+async function jobDetails(signal){
+  const ctx = weekCtx();
+  const pending = job.chunkList.filter(c => !(job.chunks[c.key] && job.chunks[c.key].st === 'kesz'));
+  let idx = 0, failed = 0;
+  const onWait = w => { jobLive.wait = Date.now() + w; liveJob(true); };
+  const worker = async () => {
+    while(idx < pending.length){
+      if(signal.aborted) throw abortError();
+      const c = pending[idx++];
+      job.chunks[c.key] = {st:'fut'}; refreshJob();
+      try{
+        const entries = c.ids.map(id => job.items.find(x => x.id === id));
+        const isSnack = entries[0].kind === 'snack';
+        const out = await callTool({system:sys(ctx), model:job.model, max_tokens:isSnack ? 4500 : 4000, signal, onWait, tools:[TOOL_DET], messages:[{role:'user', content:
+`Dolgozd ki részletesen: ${c.label} (${entries.length} étel). A nevet, a koncepciót és a megadott jelzőket tartsd meg, az "id"-t pontosan add vissza.
+${isSnack ? 'Snackek: az "adag" a vázban megadott adagszám, az alapanyagok erre a mennyiségre szóljanak; az "eltarthatosag" és a "tarolas" is kell.' : 'Minden recept 2 adagra. Fő étkezésnél 1 adag kb. 25–35 g fehérje legyen; ahol a vázban "futonapra" szerepel, legyen elég összetett szénhidrát.'}
+<vaz>${JSON.stringify(entries.map(compactSk))}</vaz>`}]}, 'etelek_reszletei', v => {
+          const arr = Array.isArray(v.etelek) ? v.etelek : [];
+          return arr.length < c.ids.length ? `Hiányos válasz (${arr.length}/${c.ids.length} étel) – újrapróbálom.` : null;
+        });
+        job.chunks[c.key] = {st:'kesz', items:entries.map((sk, i) => mergeDetail(sk, out.etelek.find(e => String(e.id) === sk.id) || out.etelek[i]))};
+      }catch(e){
+        if(e.name === 'AbortError') throw e;
+        job.chunks[c.key] = {st:'hiba', err:e.message}; failed++;
+        if(e.type === 'nokey' || e.status === 401 || e.status === 403 || /kredit/i.test(e.message)){ saveJob(); throw e; }
+      }
+      if(job){ saveJob(); refreshJob(); }
+    }
+  };
+  await Promise.all(Array.from({length:Math.max(1, Math.min(num(ai.conc) || 3, pending.length))}, worker));
+  if(failed){ const f = Object.values(job.chunks).find(c => c.st === 'hiba'); throw new Error(`${failed} rész nem sikerült (${f ? f.err : ''}). A „Folytatás” újrapróbálja őket.`); }
+}
+function assembleJob(){
+  const det = {}; Object.values(job.chunks).forEach(c => (c.items || []).forEach(x => det[x.id] = x));
+  const pick = kind => job.items.filter(x => x.kind === kind).map(x => det[x.id]).filter(Boolean);
+  const A = job.vaz.A, t = job.target;
+  loadPlan({ai:true, ev:t.ev, het:t.het, kezdo_datum:t.kezdo, generalva:isoNow(), tema:A.tema, megjegyzesek:A.megjegyzesek || [], napi_cel:targets(),
+            futonap_tipp:A.futonap_tipp || '', meal_prep:A.meal_prep || {}, etelek:pick('etel'), tartalekok:pick('tartalek'), snackek:pick('snack')}, true);
+  job.planGen = plan.generalva;
+  job.linkQueue = [...plan.etelek.filter(x => x.ajanlott).map(x => x.id), ...plan.snackek.map(x => x.id)];
+  if(job.links) toast(`✨ Kész a ${plan.ev}/${plan.het}. hét terve – a receptlinkek még töltődnek`, null, 4000);
+}
+async function jobLinks(signal){
+  if(!plan || plan.generalva !== job.planGen) return;
+  const q = job.linkQueue.filter(id => !job.linksDone[id] && MI[id]);
+  let i = 0;
+  const worker = async () => {
+    while(i < q.length){
+      if(signal.aborted) throw abortError();
+      const id = q[i++];
+      try{ await linkFor(id, signal); }
+      catch(e){ if(e.name === 'AbortError' || e.type === 'nokey' || e.status === 401 || e.status === 403 || /kredit/i.test(e.message)) throw e; }
+      if(job){ job.linksDone[id] = 1; saveJob(); refreshJob(); }
+    }
+  };
+  await Promise.all(Array.from({length:Math.min(2, Math.max(1, q.length))}, worker));
+}
+
+/* ---------- receptlink webkereséssel (csak valóban megtalált URL) ---------- */
+const normUrl = u => { try{ const x = new URL(u); return (x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/+$/, '') + x.search).toLowerCase(); }catch(e){ return ''; } };
+function cleanBlocks(content){
+  return content.filter(b => !(b.type === 'text' && !b.text)).map(b => { const o = Object.assign({}, b); if(o.type === 'text') delete o.citations; return o; });
+}
+async function aiFindLink(m, signal){
+  const ings = m.alapanyagok.slice(0, 6).map(i => baseName(i.nev)).join(', ');
+  const tools = [{type:'web_search_20250305', name:'web_search', max_uses:3, user_location:{type:'approximate', country:'HU', timezone:'Europe/Budapest'}}, TOOL_LINK];
+  const system = 'Receptlinkeket keresel egy magyar étrend-apphoz. Csak a webkeresés találatai között ténylegesen szereplő URL-t adhatsz meg; URL-t kitalálni vagy összerakni tilos.';
+  let messages = [{role:'user', content:`Keress webes kereséssel receptet vagy videót ehhez: „${m.nev}”${ings ? ` (fő hozzávalók: ${ings})` : ''}.
+Előnyben: magyar receptoldalak (Nosalty, Mindmegette, Street Kitchen, Sobors), utána BBC Good Food vagy YouTube. Elég, ha nagyon hasonló étel receptje.
+A végén mindenképp hívd meg a link_valasz eszközt a legjobb találat pontos URL-jével és „Oldal neve – recept címe” formájú címmel; ha nincs megfelelő találat, üres url-lel.`}];
+  const found = new Map();
+  for(let round = 0; round < 3; round++){
+    const msg = await withRetry(() => callClaude({model:ai.linkModel || 'claude-haiku-5-5', system, messages, tools, max_tokens:1200, signal}), {signal, tries:3});
+    for(const b of msg.content) if(b.type === 'web_search_tool_result' && Array.isArray(b.content)) for(const r of b.content) if(r && r.url) found.set(normUrl(r.url), r);
+    const t = msg.content.find(b => b.type === 'tool_use' && b.name === 'link_valasz');
+    if(t){
+      const u = String((t.input && t.input.url) || '').trim(), hit = u ? found.get(normUrl(u)) : null;
+      if(!hit) return null;   // nem a találatok közül való → eldobjuk
+      return {url:hit.url, cim:String((t.input && t.input.cim) || hit.title || hit.url).slice(0, 160)};
+    }
+    if(msg.stop_reason === 'pause_turn' || (round === 0 && msg.stop_reason === 'end_turn')){
+      messages = messages.concat([{role:'assistant', content:cleanBlocks(msg.content)}]);
+      if(msg.stop_reason !== 'pause_turn') messages.push({role:'user', content:'Add meg az eredményt a link_valasz eszközzel.'});
+      continue;
+    }
+    return null;
+  }
+  return null;
+}
+async function linkFor(id, signal){
+  const m = MI[id]; if(!m) return null;
+  const r = await aiFindLink(m, signal);
+  const cur = MI[id]; if(!cur) return r;
+  cur.link = r; cur.link_keresve = true; store.set('plan', plan);
+  return r;
+}
+async function aiLink(id){
+  const k = 'l:' + id; if(aiBusy[k]) return;
+  aiBusy[k] = 'Keresés…'; renderAll();
+  try{ const r = await linkFor(id); toast(r ? '🔗 Link megtalálva' : '🔗 Nem található ellenőrzött link'); }
+  catch(e){ toast('⚠️ ' + e.message, null, 6000); }
+  finally{ delete aiBusy[k]; renderAll(); }
+}
+const bulkText = () => aiBusy.bulk ? `Linkkeresés: ${aiBusy.bulk.done}/${aiBusy.bulk.total}` : '';
+async function bulkLinks(){
+  if(aiBusy.bulk || !plan) return;
+  const ids = [...plan.etelek, ...plan.tartalekok, ...plan.snackek].filter(x => !x.link && !x.link_keresve).map(x => x.id);
+  if(!ids.length){ toast('Minden ételnél volt már keresés'); return; }
+  const ctl = new AbortController();
+  aiBusy.bulk = {done:0, total:ids.length, found:0, ctl}; renderAll();
+  let i = 0;
+  const worker = async () => {
+    while(i < ids.length && !ctl.signal.aborted){
+      const id = ids[i++];
+      try{ if(await linkFor(id, ctl.signal)) aiBusy.bulk.found++; }
+      catch(e){ if(e.name === 'AbortError') return; if(e.type === 'nokey' || e.status === 401 || e.status === 403 || /kredit/i.test(e.message)){ toast('⚠️ ' + e.message, null, 6000); ctl.abort(); return; } }
+      aiBusy.bulk.done++; document.querySelectorAll('.bulktxt').forEach(el => el.textContent = bulkText());
+    }
+  };
+  await Promise.all([worker(), worker()]);
+  const b = aiBusy.bulk; delete aiBusy.bulk;
+  toast(`🔗 ${b.found} link található ${b.done} ételhez`, null, 4000); renderAll();
+}
+
+/* ---------- részletezés, alternatívák, kérdés ---------- */
+async function aiDetail(id){
+  const k = 'd:' + id; if(!MI[id] || aiBusy[k]) return;
+  aiBusy[k] = 'Részletezés…'; renderAll(); if(cook && cook.id === id) renderCook();
+  try{
+    const out = await callTool({system:sys(), max_tokens:3000, tools:[TOOL_RESZL], messages:[{role:'user', content:
+`Írd meg részletesen, kezdőbarát módon ennek a receptnek a lépéseit: 6–10 lépés, mindegyik 1–3 mondat (mit, mivel, milyen lángon, miről látszik, hogy kész). Ahol várni kell vagy főzési idő van, adj "perc" mezőt. A lépésekben ne írj konkrét mennyiséget (az app skálázza a hozzávalókat), legfeljebb arányt.
+Adj 2–4 rövid tippet és 2–4 helyettesítési lehetőséget (Lidl-ben kapható alternatívákkal).
+<recept>${JSON.stringify(recipeCtx(MI[id]))}</recept>`}]}, 'reszletes_recept', v => Array.isArray(v.lepesek) && v.lepesek.length >= 2 ? null : 'Túl kevés lépés – újrapróbálom.');
+    const cur = MI[id]; if(!cur) return;
+    if(!cur.lepesek_eredeti) cur.lepesek_eredeti = cur.lepesek;
+    cur.lepesek = normSteps(out.lepesek);
+    cur.tippek = (out.tippek || []).map(String).filter(Boolean);
+    cur.helyettesitesek = (out.helyettesitesek || []).map(String).filter(Boolean);
+    cur.reszletes = true;
+    store.set('plan', plan); toast('🔍 Elkészült a részletes recept');
+  }catch(e){ toast('⚠️ ' + e.message, null, 6000); }
+  finally{
+    delete aiBusy[k]; renderAll();
+    if(cook && cook.id === id){ cook.step = Math.min(cook.step, Math.max(0, MI[id].lepesek.length - 1)); renderCook(); }
+  }
+}
+function rerenderSwap(){ const s = $('#sheet'); if(swapUI.slot && !s.hidden && s.dataset.kind === 'swap'){ const sc = s.querySelector('.sheet-b'), top = sc ? sc.scrollTop : 0; openSwap(swapUI.slot); const n = s.querySelector('.sheet-b'); if(n) n.scrollTop = top; } }
+async function aiAlternatives(slot){
+  const key = 'alt:' + slot; if(aiBusy[key]) return;
+  const [d, m] = slot.split('-');
+  const others = MEALS.filter(([x]) => x !== m).map(([x, xn]) => { const e = effMeal(d, x); return e ? {t:`${xn}: ${e.meal.nev} (${e.meal.feherje_g ?? '?'} g fehérje)`, p:e.meal.feherje_g || 0} : null; }).filter(Boolean);
+  const need = Math.max(25, Math.min(45, Math.round(plan.napi_cel.feherje_min - 10 - others.reduce((a, o) => a + o.p, 0))));
+  const used = [...new Set([...plan.etelek, ...plan.tartalekok].map(x => x.nev))];
+  const wishes = swapUI.wish.map(k => WISH[k][1] + (k === 'kamra' && pantry.length ? ` (${pantry.join(', ')})` : '')).concat(swapUI.text.trim() ? [swapUI.text.trim()] : []);
+  aiBusy[key] = 'Claude gondolkodik…'; rerenderSwap();
+  try{
+    const out = await callTool({system:sys(), max_tokens:5000, tools:[TOOL_ALT],
+      onProgress:c => { aiBusy[key] = `Claude ír… (${c.toLocaleString('hu-HU')} karakter)`; const el = document.querySelector('.ai-status-t'); if(el) el.textContent = aiBusy[key]; },
+      messages:[{role:'user', content:
+`Adj 3 új, egymástól eltérő ${mealName(m).toLowerCase()}ötletet ${dayName(d).toLowerCase()}i napra (${plan.ev}/${plan.het}. hét${plan.tema ? ', téma: ' + plan.tema : ''}).
+A nap többi étkezése: ${others.map(o => o.t).join('; ') || 'nincs adat'}.
+Ehhez az étkezéshez kb. ${need} g fehérje/adag kellene a napi célhoz.
+${wishes.length ? 'KÉRÉS: ' + wishes.join('; ') + '\n' : ''}Ne ismételd ezeket: ${used.join('; ')}.${feedbackCtx()}
+Teljes recept 2 adagra.`}]}, 'alternativak', v => Array.isArray(v.etelek) && v.etelek.length ? null : 'Nem jött ötlet – újrapróbálom.');
+    const stamp = Date.now().toString(36), ids = [];
+    out.etelek.slice(0, 3).forEach((raw, i) => {
+      const it = normItem(Object.assign({}, raw, {id:`ai-${stamp}-${i + 1}`, etkezes:m, ai:true}), i, 'tartalek');
+      it.etkezes = m; plan.tartalekok.push(it); ids.push(it.id);
+    });
+    rebuildIndex(); store.set('plan', plan);
+    swapUI.fresh = ids;
+  }catch(e){ toast('⚠️ ' + e.message, null, 6000); }
+  finally{ delete aiBusy[key]; rerenderSwap(); }
+}
+function fmtAnswer(t){ return esc(String(t || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/^#+\s*/gm, '')).replace(/\n/g, '<br>'); }
+function openAsk(id){ if(!MI[id]) return; askState = {id, msgs:[], busy:false, err:'', draft:''}; renderAsk(); }
+function renderAsk(){
+  if(!askState) return; const m = MI[askState.id]; if(!m) return;
+  const st = askState, last = st.msgs.length - 1;
+  const bubbles = st.msgs.map((x, i) => `<div class="bubble ${x.role === 'user' ? 'me' : 'bot'}"${i === last && x.role === 'assistant' ? ' id="askLast"' : ''}>${fmtAnswer(x.content)}</div>`).join('');
+  const intro = `<p class="small muted" style="margin-top:0">Bármi kérdezhető erről a receptről – a Claude látja a hozzávalókat és a lépéseket.</p><div class="chips">${ASK_CHIPS.map((q, i) => `<button class="fchip" data-act="askchip" data-i="${i}">${esc(q)}</button>`).join('')}</div>`;
+  const thinking = st.busy && (last < 0 || st.msgs[last].role === 'user') ? '<div class="bubble bot"><span class="spin"></span></div>' : '';
+  openSheet('💬 ' + m.nev, `<div class="chat">${bubbles || intro}${thinking}${st.err ? `<div class="warnbox">${esc(st.err)}</div>` : ''}</div>
+    <div class="row" style="margin-top:10px;align-items:flex-end"><textarea class="txt grow" id="askInput" rows="2" placeholder="Kérdés…" ${st.busy ? 'disabled' : ''}>${esc(st.draft)}</textarea><button class="btn ai" data-act="asksend" ${st.busy ? 'disabled' : ''}>Küldés</button></div>`, 'ask');
+  const b = document.querySelector('#sheet .sheet-b'); if(b) b.scrollTop = b.scrollHeight;
+}
+async function askSend(q){
+  q = String(q || '').trim(); const st = askState;
+  if(!q || !st || st.busy) return;
+  const m = MI[st.id];
+  st.msgs.push({role:'user', content:q}); st.busy = true; st.err = ''; st.draft = ''; renderAsk();
+  const sysTxt = systemPrompt() + '\n\nA RECEPT, AMIRŐL A KÉRDÉS SZÓL:\n' + JSON.stringify(Object.assign(recipeCtx(m), {fo:settings.fo, feherje_g_adagonkent:m.feherje_g, kcal_adagonkent:m.kcal})) +
+    '\n\nVálaszolj tömören (kb. 120 szóig, ha nem kérnek többet), markdown nélkül, sima szövegben; felsoroláshoz kötőjeles sorokat használj.';
+  const send = st.msgs.map(x => ({role:x.role, content:x.content}));
+  let started = false;
+  try{
+    const msg = await withRetry(() => {
+      if(started){ st.msgs.pop(); started = false; }
+      return callClaude({system:[{type:'text', text:sysTxt}], max_tokens:1000, messages:send, onProgress:(c, text) => {
+        if(text == null) return;
+        if(!started){ started = true; st.msgs.push({role:'assistant', content:text}); if(askState === st) renderAsk(); }
+        else { st.msgs[st.msgs.length - 1].content = text; const el = document.getElementById('askLast'); if(el && askState === st) el.innerHTML = fmtAnswer(text); }
+      }});
+    }, {tries:3});
+    const text = msg.content.filter(b => b.type === 'text').map(b => b.text).join('').trim() || '(üres válasz)';
+    if(started) st.msgs[st.msgs.length - 1].content = text; else st.msgs.push({role:'assistant', content:text});
+  }catch(e){
+    if(started) st.msgs.pop();
+    if(st.msgs.length && st.msgs[st.msgs.length - 1].role === 'user'){ st.msgs.pop(); st.draft = q; }
+    st.err = e.message;
+  }finally{ st.busy = false; if(askState === st) renderAsk(); }
+}
+async function aiTest(){
+  aiBusy.test = 1; renderAll();
+  try{ await callClaude({model:mainModel(), max_tokens:5, messages:[{role:'user', content:'Válaszolj csak ennyivel: ok'}]}); toast(`✓ A kulcs működik (${modelInfo(mainModel())[1]})`, null, 4000); }
+  catch(e){ toast('⚠️ ' + e.message, null, 8000); }
+  finally{ delete aiBusy.test; renderAll(); }
+}
+
+/* ---------- AI felület ---------- */
+function aiButtons(m){
+  if(!aiOn()) return '';
+  const b = (key, act, label) => { const busy = key && aiBusy[key]; return `<button class="btn sm ai-o" data-act="${act}" data-id="${esc(m.id)}" ${busy ? 'disabled' : ''}>${busy ? `<span class="spin"></span> ${esc(busy)}` : label}</button>`; };
+  return `<div class="actions ai-actions">${!m.reszletes ? b('d:' + m.id, 'aidetail', '🔍 Részletezd') : ''}${b('', 'ask', '💬 Kérdezz')}${!m.link ? b('l:' + m.id, 'ailink', m.link_keresve ? '🔗 Link újrakeresése' : '🔗 Link keresése') : ''}</div>`;
+}
+function extrasHTML(m){
+  return (m.tippek && m.tippek.length ? `<h4>Tippek</h4><ul class="tips">${m.tippek.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '') +
+         (m.helyettesitesek && m.helyettesitesek.length ? `<h4>Helyettesítések</h4><ul class="tips">${m.helyettesitesek.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '');
+}
+function jobStatusText(){
+  if(!job) return '';
+  if(jobLive.wait > Date.now()) return `Várakozás a sebességkorlát vagy egy hiba miatt (${Math.ceil((jobLive.wait - Date.now()) / 1000)} mp), utána automatikusan folytatódik…`;
+  if(job.phase === 'vaz') return (jobLive.note || 'A hét váza készül…') + (jobLive.chars ? ` (${jobLive.chars.toLocaleString('hu-HU')} karakter)` : '');
+  if(job.phase === 'reszletek'){ const f = (job.chunkList || []).filter(c => job.chunks[c.key] && job.chunks[c.key].st === 'fut').map(c => c.label); return f.length ? 'Most: ' + f.join(', ') : 'Receptek…'; }
+  if(job.phase === 'linkek') return 'Receptlinkek keresése az ajánlott ételekhez – a terv már használható.';
+  return '';
+}
+function jobCardHTML(){
+  if(!job) return '';
+  const t = job.target, total = (job.chunkList || []).length, done = Object.values(job.chunks || {}).filter(c => c.st === 'kesz').length;
+  const lq = (job.linkQueue || []).length, ld = Object.keys(job.linksDone || {}).length, linkPhase = job.phase === 'linkek';
+  const pct = linkPhase ? (lq ? ld / lq * 100 : 100) : job.phase === 'vaz' ? (job.vaz ? 8 : 3) : 10 + (total ? 88 * done / total : 0);
+  const steps = [['1. Váz', job.phase !== 'vaz' ? '✓' : ''], ['2. Receptek', job.phase === 'vaz' ? '' : job.phase === 'reszletek' ? `${done}/${total}` : '✓']];
+  if(job.links) steps.push(['3. Linkek', linkPhase ? `${ld}/${lq}` : '']);
+  const status = job.error ? `<div class="warnbox">⚠️ ${esc(job.error)}</div>`
+    : jobRunning ? `<div class="small muted jobstatus">${esc(jobStatusText())}</div>`
+    : `<div class="small muted">⏸ Szünetel – a kész részek megmaradtak.</div>`;
+  return `<div class="card pad jobcard" data-sig="${esc(jobSig())}">
+    <div class="row">${jobRunning ? '<span class="spin" style="color:var(--ai)"></span>' : '<span>✨</span>'}<b class="grow">${linkPhase ? 'Receptlinkek keresése' : `Új hét készül: ${t.ev}/${t.het}. hét`}</b><span class="small muted">${esc(modelInfo(job.model)[1])}</span></div>
+    <div class="bar2" style="margin-top:10px"><i class="jobbar" style="width:${pct}%"></i></div>
+    <div class="steprow">${steps.map(([n, v]) => `<span>${n} <b>${v}</b></span>`).join('')}</div>
+    ${status}
+    ${!linkPhase && jobRunning ? '<p class="small muted" style="margin:6px 0 0">Az app közben használható. Ha bezáródik, a kész részek megmaradnak, és újranyitáskor folytatódik.</p>' : ''}
+    <div class="row wrap" style="margin-top:10px">${jobRunning ? '' : '<button class="btn sm ai" data-act="jobresume">▶ Folytatás</button>'}${linkPhase ? '<button class="btn sm" data-act="jobskiplinks">Linkek kihagyása</button>' : '<button class="btn sm danger" data-act="jobcancel">Megszakítás</button>'}</div>
+  </div>`;
+}
+let liveT = 0;
+function liveJob(force){ const now = Date.now(); if(!force && now - liveT < 400) return; liveT = now; document.querySelectorAll('.jobstatus').forEach(e => e.textContent = jobStatusText()); }
+function jobSig(){ return job ? [job.phase, jobRunning, job.error || '', job.links].join('|') : ''; }
+function refreshJob(){
+  // helyben frissít (sáv, lépések, állapot), hogy a gombok ne cserélődjenek ki koppintás közben
+  const sig = jobSig();
+  document.querySelectorAll('.jobcard').forEach(e => {
+    if(!job || e.dataset.sig !== sig){ e.outerHTML = jobCardHTML(); return; }
+    const tmp = document.createElement('div'); tmp.innerHTML = jobCardHTML(); const n = tmp.firstElementChild;
+    for(const s of ['.jobbar', '.steprow', '.jobstatus']){ const a = e.querySelector(s), b = n.querySelector(s); if(a && b){ if(s === '.jobbar') a.style.width = b.style.width; else a.innerHTML = b.innerHTML; } }
+  });
+}
+function genBannerHTML(){
+  if(!aiOn() || job || !needNewWeek()) return '';
+  const nx = weekTargets()[defaultTarget()];
+  return `<div class="card pad aibanner"><div class="row"><span style="font-size:26px">✨</span><div class="grow"><b>${plan && !plan.demo ? 'Jöhet a következő hét' : 'Heti terv generálása'}</b><div class="small muted">${nx.ev}/${nx.het}. hét – a Claude az értékelések, az előzmények és a kamra alapján tervez.</div></div></div><button class="btn ai" data-act="genopen" style="width:100%;margin-top:10px">✨ Új hét generálása</button></div>`;
+}
+function estimate(){
+  const [, , , pin, pout] = modelInfo(mainModel()), [, , , lin, lout] = modelInfo(ai.linkModel);
+  return {plan:(60000 * pin + 65000 * pout) / 1e6, links:31 * (2.5 * WEB_SEARCH_USD + (25000 * lin + 400 * lout) / 1e6)};
+}
+function openGen(){
+  if(!aiOn()){ toast('Előbb Claude API-kulcs kell (Több fül → Claude AI)'); ui.tab = 'tobb'; saveUI(); renderAll(); return; }
+  if(genOpt.target == null) genOpt.target = defaultTarget();
+  const wt = weekTargets(), est = estimate();
+  const range = t => { const a = new Date(t.kezdo + 'T12:00:00'), b = new Date(a); b.setDate(b.getDate() + 6); const f = x => x.toLocaleDateString('hu-HU', {month:'short', day:'numeric'}); return `${f(a)} – ${f(b)}`; };
+  openSheet('✨ Új hét generálása', `
+    <p class="small muted" style="margin-top:0">A Claude a Rólam adatok, az értékelések (👍 👎 😵), az utóbbi 3 hét és a kamra alapján tervez: 63 étel, 12 tartalék, 10 snack és meal prep.</p>
+    <div class="lbl">Melyik hét?</div>
+    <div class="seg">${wt.map((t, i) => `<button data-act="gentarget" data-id="${i}" aria-pressed="${genOpt.target === i}">${i ? 'Jövő hét' : 'Ez a hét'}<br><span class="small muted" style="font-weight:500">${t.het}. hét · ${range(t)}</span></button>`).join('')}</div>
+    <div class="lbl">Futónapok – ezekre több összetett szénhidrát</div>
+    <div class="chips">${DAYS.map(([id, , sh]) => `<button class="fchip" data-act="genrun" data-id="${id}" aria-pressed="${profile.futonapok.includes(id)}">${sh}</button>`).join('')}</div>
+    <div class="lbl">Különleges kérés erre a hétre (nem kötelező)</div>
+    <textarea class="txt" id="genExtra" rows="2" placeholder="pl. szombaton vendégek jönnek; kevesebb tejtermék; sok sütőtök">${esc(genOpt.extra)}</textarea>
+    <label class="check"><input type="checkbox" id="genLinks" ${genOpt.links ? 'checked' : ''}><span>Receptlinkek keresése az ajánlott ételekhez és a snackekhez (webkeresés, ≈ ${usd(est.links)}). Csak a keresésben ténylegesen megtalált oldal kerülhet be.</span></label>
+    <div class="note">Modell: <b>${esc(modelInfo(mainModel())[1])}</b> · becsült költség ≈ <b>${usd(est.plan + (genOpt.links ? est.links : 0))}</b> · kb. 5–10 perc (új API-fióknál a sebességkorlát miatt lassabb is lehet).</div>
+    ${plan && !plan.demo ? `<div class="warnbox">A jelenlegi terv (${plan.ev}/${plan.het}. hét) lecserélődik. Az értékelések, a kamra és az előzmények megmaradnak.</div>` : ''}
+    <button class="btn ai" data-act="genstart" style="width:100%;margin-top:14px;min-height:50px">✨ Generálás indítása</button>`, 'gen');
+}
+function linkBulkBtn(){
+  if(!plan) return '';
+  if(aiBusy.bulk) return `<span class="small row" style="color:var(--ai)"><span class="spin"></span><span class="bulktxt">${bulkText()}</span></span>`;
+  const n = [...plan.etelek, ...plan.tartalekok, ...plan.snackek].filter(x => !x.link && !x.link_keresve).length;
+  return n ? `<button class="btn" data-act="bulklinks">🔗 Linkek a többi ételhez (${n})</button>` : '';
+}
+function aiSettingsHTML(){
+  const mu = monthUsage(), cap = num(ai.keret) || 100;
+  const mask = ai.key ? ai.key.slice(0, 10) + '…' + ai.key.slice(-4) : '';
+  const opts = sel => MODELS.map(([id, n, d]) => `<option value="${id}"${sel === id ? ' selected' : ''}>${n} – ${d}</option>`).join('');
+  const mi = modelInfo(mainModel()), pr = x => String(x).replace('.', ',');
+  return `<div class="sec-title">✨ Claude AI</div><div class="card">
+    <div class="field col">
+      <div>${ai.key ? `<b style="color:var(--ok)">✓ API-kulcs beállítva</b> <span class="muted small">${esc(mask)}</span>` : '<b>Nincs API-kulcs</b> <span class="muted small">– addig az AI-funkciók rejtve vannak</span>'}</div>
+      <div class="row"><input class="txt grow" id="aiKey" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${ai.key ? 'Új kulcs…' : 'sk-ant-api03-…'}"><button class="btn sm ai" data-act="aikeysave">Mentés</button></div>
+      ${ai.key ? `<div class="row wrap"><button class="btn sm" data-act="aitest" ${aiBusy.test ? 'disabled' : ''}>${aiBusy.test ? '<span class="spin"></span> Teszt…' : 'Kulcs tesztelése'}</button><button class="btn sm danger" data-act="aikeydel">Kulcs törlése</button></div>` : '<span class="small muted">A kulcs a platform.claude.com → API keys oldalon hozható létre; csak ezen az eszközön tárolódik.</span>'}
+    </div>
+    <div class="field col"><span>Modell</span><select class="txt" data-ai="model">${opts(ai.model)}</select>
+      <span class="small muted">${String(ai.customModel || '').trim() ? `Egyedi modell van beállítva: ${esc(ai.customModel)} · ` : ''}$${pr(mi[3])} bemenet / $${pr(mi[4])} kimenet millió tokenenként · egy heti terv ≈ ${usd(estimate().plan)}</span></div>
+    <div class="field col"><div class="row"><span class="grow">Ebben a hónapban (becslés)</span><b>${usd(mu.usd)}</b><span class="muted">/ $${cap}</span></div>
+      <div class="bar2"><i class="${mu.usd > cap ? 'over' : ''}" style="width:${Math.min(100, mu.usd / cap * 100)}%"></i></div>
+      <span class="small muted">${mu.calls} hívás, ${mu.searches} webkeresés · a pontos egyenleg a Claude Console-ban látszik</span></div>
+    ${ai.key ? `<div class="field col"><div class="row wrap"><button class="btn ai" data-act="genopen">✨ Új hét generálása</button>${linkBulkBtn()}</div></div>` : ''}
+    <details class="field col"><summary>Haladó beállítások</summary>
+      <label class="lbl">API-cím</label><input class="txt" data-ai="endpoint" value="${esc(ai.endpoint)}" autocapitalize="off" spellcheck="false">
+      <label class="lbl">Egyedi modellazonosító (felülírja a fentit)</label><input class="txt" data-ai="customModel" value="${esc(ai.customModel)}" placeholder="pl. claude-sonnet-5-5" autocapitalize="off" spellcheck="false">
+      <label class="lbl">Linkkereső modell</label><select class="txt" data-ai="linkModel">${opts(ai.linkModel)}</select>
+      <label class="lbl">Párhuzamos kérések (1–4)</label><input class="txt short" data-ai="conc" type="number" min="1" max="4" value="${esc(ai.conc)}">
+      <label class="lbl">Havi API-keret ($)</label><input class="txt short" data-ai="keret" type="number" min="1" value="${esc(ai.keret)}">
+    </details>
+  </div>`;
+}
+function profileHTML(){
+  const p = profile, t = targets();
+  const inp = (k, label, type, ph) => `<div class="field"><span>${label}</span><input class="txt short" data-pf="${k}" type="${type}" ${type === 'number' ? 'inputmode="decimal"' : ''} value="${esc(p[k])}" placeholder="${esc(ph)}"></div>`;
+  return `<div class="sec-title">🙋 Rólam<span class="r small">csak ezen az eszközön tárolódik</span></div><div class="card">
+    <div class="field"><span>Nem</span><div class="seg" style="width:160px">${['férfi', 'nő'].map(v => `<button data-act="pf" data-k="nem" data-id="${v}" aria-pressed="${p.nem === v}">${v}</button>`).join('')}</div></div>
+    ${inp('kor', 'Kor (év)', 'number', 'pl. 30')}${inp('magassag', 'Magasság (cm)', 'number', 'pl. 175')}${inp('suly', 'Testsúly (kg)', 'number', 'pl. 70')}${inp('futas', 'Futás / hét', 'text', 'pl. 1–2')}
+    <div class="field"><span>Cél</span><select class="txt short" data-pf="cel">${['szinten tartás', 'izomépítés', 'fogyás'].map(v => `<option${p.cel === v ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+    <div class="field"><span class="small muted">Napi cél${num(p.suly) && num(p.magassag) && num(p.kor) ? ' (számított)' : ' (alap)'}</span><b class="small targets">${t.feherje_min}–${t.feherje_max} g fehérje · ${t.kcal_min}–${t.kcal_max} kcal</b></div>
+    ${inp('bolt', 'Bolt', 'text', 'pl. Lidl (Budapest)')}
+    <div class="field col"><span>Nem eszem / kerülendő</span><textarea class="txt" data-pf="kerulendo" rows="2" placeholder="pl. nyers hagyma, koriander">${esc(p.kerulendo)}</textarea></div>
+    <div class="field col"><span>Kedvencek, ízlés</span><textarea class="txt" data-pf="kedvelt" rows="2" placeholder="pl. csípős, sok zöldfűszer">${esc(p.kedvelt)}</textarea></div>
+    <div class="field col"><span>Saját szabályok</span><textarea class="txt" data-pf="szabalyok" rows="6">${esc(p.szabalyok)}</textarea><button class="btn sm ghost" data-act="rulesreset" style="align-self:flex-start">Alapértelmezett szabályok</button></div>
+  </div>`;
+}
+function downloadText(name, text){
+  const blob = new Blob([text], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+function exportPlan(){
+  if(!plan) return;
+  const conv = x => { const o = Object.assign({}, x); o.nutriscore_becsult = o.nutriscore; delete o.nutriscore; delete o.kind; if(!o.nap) delete o.nap; if(!o.lepesek_eredeti) delete o.lepesek_eredeti; return o; };
+  const out = {ev:plan.ev, het:plan.het, kezdo_datum:plan.kezdo_datum, generalva:plan.generalva, tema:plan.tema, megjegyzesek:plan.megjegyzesek, napi_cel:plan.napi_cel, futonap_tipp:plan.futonap_tipp, meal_prep:plan.meal_prep,
+    etelek:plan.etelek.map(conv), tartalekok:plan.tartalekok.map(conv), snackek:plan.snackek.map(conv)};
+  downloadText('week.json', JSON.stringify(out, null, 1)); toast('week.json letöltve');
+}
+
+/* ---------- események ---------- */
+function toggleArr(arr, v){ const i = arr.indexOf(v); if(i >= 0) arr.splice(i, 1); else arr.push(v); }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-act]'); if(!t) return;
+  if(t.tagName === 'SELECT') return;
+  const a = t.dataset.act, id = t.dataset.id;
+  switch(a){
+    case 'tab': ui.tab = id; saveUI(); renderAll(); window.scrollTo(0, 0); break;
+    case 'view': ui.view = id; saveUI(); renderAll(); break;
+    case 'day': ui.day = id; renderAll(); break;
+    case 'toggle': toggleArr(ui.open, id); saveUI(); renderAll(); break;
+    case 'prep': ui.prepOpen = !ui.prepOpen; saveUI(); renderAll(); break;
+    case 'prepcheck': { const i = t.dataset.i; sel.prep[i] = !sel.prep[i]; saveSel(); renderAll(); break; }
+    case 'select': sel.slots[t.dataset.slot] = id; saveSel(); renderAll(); toast('Kiválasztva: ' + MI[id].nev); break;
+    case 'unselect': delete sel.slots[t.dataset.slot]; saveSel(); renderAll(); break;
+    case 'swap': openSwap(t.dataset.slot); break;
+    case 'swappick': doSwap(t.dataset.slot, id); break;
+    case 'closesheet': closeSheet(); break;
+    case 'cook': openCook(id); break;
+    case 'closecook': closeCook(); break;
+    case 'cooknext': cook.step++; renderCook(); $('#cook .cook-b').scrollTop = 0; break;
+    case 'cookprev': cook.step = Math.max(0, cook.step - 1); renderCook(); break;
+    case 'starttimer': startTimer(+t.dataset.step); break;
+    case 'canceltimer': cancelTimer(id); break;
+    case 'timerbar': { const tm = timers.find(x => x.id === id); if(tm){ const mid = tm.key.split('#')[0]; openCook(mid); cook.step = +tm.key.split('#')[1]; renderCook(); } break; }
+    case 'rate': { const m = MI[id]; const k = strip(m.nev); if(ratings[k] && ratings[k].v === t.dataset.v) delete ratings[k]; else ratings[k] = {v:t.dataset.v, nev:m.nev, t:Date.now()}; store.set('ratings', ratings); renderAll(); break; }
+    case 'filter': toggleArr(ui.filters, id); saveUI(); renderAll(); break;
+    case 'snacklist': toggleArr(sel.snacks, id); saveSel(); renderAll(); toast(sel.snacks.includes(id) ? 'Listára téve' : 'Levéve a listáról'); break;
+    case 'check': checks.items[id] = !checks.items[id]; if(!checks.items[id]) delete checks.items[id]; store.set('checks', checks); renderAll(); break;
+    case 'pantry': if(!pantry.some(p => strip(p) === strip(id))) pantry.push(id); store.set('pantry', pantry); renderAll(); toast(`🏠 ${id}: otthon van`); break;
+    case 'unpantry': pantry = pantry.filter(p => strip(p) !== strip(id)); store.set('pantry', pantry); renderAll(); break;
+    case 'fillrec': { let n = 0; for(const [d] of DAYS) for(const [m] of MEALS){ const k = slotKey(d, m); if(!sel.slots[k]){ const r = plan.etelek.find(x => x.nap === d && x.etkezes === m && x.ajanlott); if(r){ sel.slots[k] = r.id; n++; } } } saveSel(); renderAll(); toast(n ? `${n} üres helyre került az ajánlott` : 'Nincs üres hely'); break; }
+    case 'copylist': copyText(listText(), 'Bevásárlólista'); break;
+    case 'clearchecks': checks.items = {}; store.set('checks', checks); renderAll(); toast('Pipák törölve'); break;
+    case 'pickfile': $('#fileInput').click(); break;
+    case 'restore': $('#restoreInput').click(); break;
+    case 'serverfetch': fetchServerWeek(true); break;
+    case 'demo': loadPlan(JSON.parse(JSON.stringify(DEMO))); ui.tab = 'het'; saveUI(); renderAll(); break;
+    case 'pasteload': { const v = $('#pasteBox').value; if(!v.trim()){ toast('Előbb illeszd be a JSON-t'); break; } try{ loadPlan(v); ui.tab = 'het'; saveUI(); renderAll(); }catch(err){ toast('Hibás JSON: ' + err.message, null, 5000); } break; }
+    case 'fo': settings.fo = +id; store.set('settings', settings); renderAll(); break;
+    case 'tema': settings.tema = id; store.set('settings', settings); renderAll(); break;
+    case 'plants': ui.plantsOpen = !ui.plantsOpen; saveUI(); renderAll(); break;
+    case 'feedback': copyText(feedbackText(), 'Visszajelzés'); break;
+    case 'backupdl': downloadBackup(); break;
+    case 'backupcopy': copyText(JSON.stringify(backupObj()), 'Mentés'); break;
+    case 'genopen': openGen(); break;
+    case 'gentarget': genOpt.target = +id; openGen(); break;
+    case 'genrun': toggleArr(profile.futonapok, id); store.set('profile', profile); openGen(); break;
+    case 'genstart': { const l = $('#genLinks'), x = $('#genExtra'); if(l) genOpt.links = l.checked; if(x) genOpt.extra = x.value; startJob(); break; }
+    case 'jobresume': runJob(); break;
+    case 'jobcancel': if(confirm('Biztosan megszakad a generálás? Az eddig kész részek elvesznek.')) cancelJob(); break;
+    case 'jobskiplinks': if(job){ job.skipLinks = true; if(jobCtl) jobCtl.abort(); else { finishJob(); renderAll(); } } break;
+    case 'aidetail': aiDetail(id); break;
+    case 'ailink': aiLink(id); break;
+    case 'ask': openAsk(id); break;
+    case 'askchip': askSend(ASK_CHIPS[+t.dataset.i]); break;
+    case 'asksend': { const v = $('#askInput'); askSend(v && v.value); break; }
+    case 'aialt': { const w = $('#wishText'); if(w) swapUI.text = w.value; aiAlternatives(t.dataset.slot); break; }
+    case 'wish': { const w = $('#wishText'); if(w) swapUI.text = w.value; toggleArr(swapUI.wish, id); rerenderSwap(); break; }
+    case 'aikeysave': { const v = (($('#aiKey') || {}).value || '').trim(); if(!v){ toast('A kulcs mező üres'); break; } ai.key = v; store.set('ai', ai); renderAll(); toast(v.startsWith('sk-ant-') ? 'Kulcs elmentve – érdemes tesztelni' : 'Elmentve, de a Claude API-kulcs általában „sk-ant-” kezdetű', null, 4000); break; }
+    case 'aikeydel': if(confirm('Törlődjön az API-kulcs erről az eszközről?')){ ai.key = ''; store.set('ai', ai); renderAll(); } break;
+    case 'aitest': aiTest(); break;
+    case 'bulklinks': bulkLinks(); break;
+    case 'pf': profile[t.dataset.k] = id; store.set('profile', profile); renderAll(); break;
+    case 'rulesreset': profile.szabalyok = DEFAULT_RULES; store.set('profile', profile); renderAll(); toast('Alapértelmezett szabályok visszaállítva'); break;
+    case 'exportplan': exportPlan(); break;
+    case 'wipe': if(confirm('Biztosan törlöd az összes adatot (terv, választások, értékelések, kamra, előzmények)?')){ store.keys().forEach(k => localStorage.removeItem(k)); location.reload(); } break;
+  }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if(t.matches('select[data-act="group"]')){ ui.group = t.value; saveUI(); renderAll(); }
+  else if(t.matches('select[data-act="sort"]')){ ui.sort = t.value; saveUI(); renderAll(); }
+  else if(t.id === 'keretInput'){ const v = Math.max(0, Math.round(num(t.value) || 0)); settings.keret = v; store.set('settings', settings); toast('Heti keret: ' + fmtFt(v)); }
+  else if(t.matches('[data-pf]')){ profile[t.dataset.pf] = t.value.trim(); store.set('profile', profile); renderAll(); }
+  else if(t.matches('[data-ai]')){
+    const k = t.dataset.ai; let v = t.value.trim();
+    if(k === 'conc') v = Math.max(1, Math.min(4, Math.round(num(v) || 3)));
+    if(k === 'keret') v = Math.max(1, num(v) || 100);
+    if(k === 'endpoint' && !v) v = 'https://api.anthropic.com';
+    ai[k] = v; store.set('ai', ai); if(k !== 'endpoint' && k !== 'customModel') renderAll();
+  }
+  else if(t.id === 'genLinks'){ genOpt.links = t.checked; const x = $('#genExtra'); if(x) genOpt.extra = x.value; openGen(); }
+  else if(t.id === 'fileInput' || t.id === 'restoreInput'){
+    const f = t.files && t.files[0]; if(!f) return;
+    const isRestore = t.id === 'restoreInput';
+    f.text().then(txt => {
+      try{ if(isRestore) restoreBackup(txt); else { loadPlan(txt); ui.tab = 'het'; saveUI(); renderAll(); } }
+      catch(err){ toast((isRestore ? 'Hibás mentés: ' : 'Hibás JSON: ') + err.message, null, 5000); }
+    }).finally(() => { t.value = ''; });
+  }
+});
+$('#sheet').addEventListener('click', e => { if(e.target.id === 'sheet') closeSheet(); });
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible'){
+    if(cook) requestWake();
+    if(timers.length) tick();
+    fetchServerWeek(false);
+    if(job && !jobRunning && !job.error && aiOn()) runJob();
+  }
+});
+document.addEventListener('input', e => {
+  if(e.target.id === 'wishText') swapUI.text = e.target.value;
+  else if(e.target.id === 'genExtra') genOpt.extra = e.target.value;
+  else if(e.target.id === 'askInput' && askState) askState.draft = e.target.value;
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ if(!$('#sheet').hidden) closeSheet(); else if(cook) closeCook(); }
+  if(e.key === 'Enter' && !e.shiftKey && e.target.id === 'askInput'){ e.preventDefault(); askSend(e.target.value); return; }
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if(cook && e.key === 'ArrowRight'){ const m = MI[cook.id]; if(cook.step < m.lepesek.length - 1){ cook.step++; renderCook(); } }
+  if(cook && e.key === 'ArrowLeft' && cook.step > 0){ cook.step--; renderCook(); }
+});
+
+/* ---------- indulás ---------- */
+(function init(){
+  if(plan){
+    try{ plan = normalizePlan(plan); }catch(e){ plan = null; }
+  }
+  rebuildIndex();
+  if(plan) ensureWeekState();
+  ui.day = defaultDay();
+  if(!['het','bev','snack','tobb'].includes(ui.tab)) ui.tab = 'het';
+  renderAll();
+  fetchServerWeek(false);
+  // félbemaradt generálás folytatása (bezárt app / megszakadt kérés után is)
+  if(job && job.phase !== 'kesz' && aiOn()){ job.error = null; saveJob(); setTimeout(runJob, 600); }
+  if('serviceWorker' in navigator && location.protocol !== 'file:'){
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+{
+  "demo": true,
+  "ev": 2026,
+  "het": 45,
+  "kezdo_datum": "2026-11-02",
+  "generalva": "2026-11-02T20:00:00+01:00",
+  "tema": "Páratlan hét – ázsiai / skandináv / magyar újragondolva (DEMO)",
+  "megjegyzesek": [
+    "DEMO adat: hétfő teljes (3×3 opció), kedden csak az ajánlottak. Az első valódi week.json automatikusan lecseréli.",
+    "November 2. – halottak napja: csendes, meleg egytálétel illik a naphoz, pl. a hétfői babgulyás.",
+    "Jövő héten (nov. 11.) Márton-nap: libamáj helyett sült csirkecomb párolt lilakáposztával lehet a könnyebb változat."
+  ],
+  "napi_cel": {"feherje_min": 81, "feherje_max": 104, "kcal_min": 2100, "kcal_max": 2300},
+  "futonap_tipp": "Futónapon reggel a skyr-os zabkása (lassú szénhidrát), futás után 1 órán belül a makrélás hajdinatál – a hajdina tölti vissza a glikogént, a makréla fehérjéje és omega-3-ja segíti a regenerációt.",
+  "meal_prep": {
+    "ido_perc": 95,
+    "lepesek": [
+      {"szoveg": "Főzz meg 300 g hajdinát és 300 g barna rizst (két külön lábasban).", "tarolas": "Kihűtve, dobozban, hűtőben 4 napig", "felhasznalas": "Hétfői ebéd, kedd vacsora, kimchis rizs"},
+      {"szoveg": "Süss meg sütőben 1 tálca kockázott céklát és sütőtököt olívaolajjal, 200 °C-on 35 percig.", "tarolas": "Hűtőben 4 napig", "felhasznalas": "Ebédtálak, saláták"},
+      {"szoveg": "Főzz keményre 8 tojást (9 perc), majd hűtsd le hideg vízben.", "tarolas": "Héjában, hűtőben 5 napig", "felhasznalas": "Reggelik, snack"},
+      {"szoveg": "Áztass be 250 g vörösbabot éjszakára (ha szárazat használsz), és süsd meg a pirított csicseriborsó snacket.", "tarolas": "Bab: hűtőben; csicseriborsó: légmentes dobozban 5 napig", "felhasznalas": "Babgulyás, snack"}
+    ]
+  },
+  "etelek": [
+    {
+      "id": "hetfo-reggeli-1", "nap": "hetfo", "etkezes": "reggeli", "ajanlott": true,
+      "nev": "Skyr-os zabkása körtével, dióval és lenmaggal", "konyha": "skandináv", "feherjeforras": "tejtermék",
+      "ido_perc": 10, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 32, "kcal": 560, "rost_g": 10, "nova": 1, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": true, "koltseg_ft": 950,
+      "miert": "A zab béta-glükánja és a skyr fehérjéje egyenletes vércukrot ad délig, a dió és a lenmag omega-3-at hoz.",
+      "novenyek": ["zab", "körte", "dió", "lenmag", "fahéj"],
+      "alapanyagok": [
+        {"nev": "zabpehely (nagy szemű)", "menny": 120, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "skyr (natúr)", "menny": 400, "egyseg": "g", "kategoria": "tejtermek"},
+        {"nev": "körte", "menny": 2, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "dió", "menny": 30, "egyseg": "g", "kategoria": "egyeb"},
+        {"nev": "lenmag (darált)", "menny": 20, "egyseg": "g", "kategoria": "egyeb"},
+        {"nev": "fahéj", "menny": 1, "egyseg": "tk", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Forralj fel 400 ml vizet egy csipet sóval, szórd bele a zabpelyhet, és főzd kevergetve.", "perc": 4},
+        {"szoveg": "Húzd le a tűzről, keverd bele a lenmagot és a fahéjat, hagyd állni.", "perc": 2},
+        {"szoveg": "Kockázd fel a körtét, durván vágd össze a diót."},
+        {"szoveg": "Tálban rétegezd: zabkása, skyr, körte, dió."}
+      ],
+      "link": null
+    },
+    {
+      "id": "hetfo-reggeli-2", "nap": "hetfo", "etkezes": "reggeli", "ajanlott": false,
+      "nev": "Smørrebrød füstölt makrélával és főtt tojással", "konyha": "skandináv", "feherjeforras": "hal, tojás",
+      "ido_perc": 12, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 30, "kcal": 520, "rost_g": 8, "nova": 3, "nutriscore_becsult": "B",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": false, "koltseg_ft": 1500,
+      "miert": "A makréla olcsó omega-3-forrás, a kovászos rozskenyér rostot és fermentált élelmiszert ad.",
+      "novenyek": ["rozs", "retek", "kapor", "uborka"],
+      "alapanyagok": [
+        {"nev": "kovászos teljes kiőrlésű rozskenyér", "menny": 4, "egyseg": "szelet", "kategoria": "gabona"},
+        {"nev": "füstölt makréla", "menny": 150, "egyseg": "g", "kategoria": "feherje"},
+        {"nev": "tojás", "menny": 2, "egyseg": "db", "kategoria": "feherje"},
+        {"nev": "retek", "menny": 6, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "uborka", "menny": 0.5, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "kapor (friss)", "menny": 1, "egyseg": "csokor", "kategoria": "zoldseg"},
+        {"nev": "görög joghurt", "menny": 80, "egyseg": "g", "kategoria": "tejtermek"}
+      ],
+      "lepesek": [
+        {"szoveg": "Főzd keményre a tojásokat, majd hűtsd le hideg vízben.", "perc": 9},
+        {"szoveg": "Keverd ki a joghurtot apróra vágott kaporral, sóval, borssal."},
+        {"szoveg": "Kend meg a kenyérszeleteket, rakd rá a makrélát, a tojáskarikákat, a retket és az uborkát."}
+      ],
+      "link": null
+    },
+    {
+      "id": "hetfo-reggeli-3", "nap": "hetfo", "etkezes": "reggeli", "ajanlott": false,
+      "nev": "Kimchis pirított rizs tükörtojással", "konyha": "koreai", "feherjeforras": "tojás, edamame",
+      "ido_perc": 15, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 26, "kcal": 590, "rost_g": 8, "nova": 3, "nutriscore_becsult": "B",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": true, "koltseg_ft": 1400,
+      "miert": "A kimchi élőflórát, a barna rizs lassú szénhidrátot, a tojás és az edamame teljes értékű fehérjét ad.",
+      "novenyek": ["barna rizs", "kimchi", "edamame", "újhagyma", "szezám"],
+      "alapanyagok": [
+        {"nev": "barna rizs (főtt)", "menny": 350, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "kimchi", "menny": 200, "egyseg": "g", "kategoria": "tejtermek"},
+        {"nev": "tojás", "menny": 4, "egyseg": "db", "kategoria": "feherje"},
+        {"nev": "edamame (fagyasztott)", "menny": 120, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "újhagyma", "menny": 2, "egyseg": "szál", "kategoria": "zoldseg"},
+        {"nev": "szezámmag", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"},
+        {"nev": "olívaolaj", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Hevítsd fel az olajat, pirítsd a felaprított kimchit.", "perc": 2},
+        {"szoveg": "Add hozzá a rizst és az edamamét, pirítsd, amíg a rizs kissé megkapja.", "perc": 5},
+        {"szoveg": "Közben süss tükörtojást.", "perc": 3},
+        {"szoveg": "Tálald a tojással, újhagymával és szezámmaggal."}
+      ],
+      "link": {"url": "https://www.sbs.com.au/food/recipe/quick-kimchi-fried-rice/iasgw2w0a", "cim": "SBS Food – Quick kimchi fried rice"}
+    },
+    {
+      "id": "hetfo-ebed-1", "nap": "hetfo", "etkezes": "ebed", "ajanlott": true,
+      "nev": "Makrélás hajdinatál sült céklával és savanyú káposztával", "konyha": "magyar újragondolva", "feherjeforras": "hal",
+      "ido_perc": 20, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 34, "kcal": 720, "rost_g": 11, "nova": 3, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": true, "futonapra": true, "koltseg_ft": 2300,
+      "miert": "Hajdina = magnézium és rutin, makréla = omega-3, savanyú káposzta = élőflóra és C-vitamin.",
+      "novenyek": ["hajdina", "cékla", "savanyú káposzta", "petrezselyem", "vöröshagyma"],
+      "alapanyagok": [
+        {"nev": "hajdina", "menny": 160, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "makréla (konzerv, saját levében)", "menny": 250, "egyseg": "g", "kategoria": "feherje"},
+        {"nev": "cékla", "menny": 400, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "savanyú káposzta", "menny": 200, "egyseg": "g", "kategoria": "tejtermek"},
+        {"nev": "vöröshagyma", "menny": 0.5, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "petrezselyem (friss)", "menny": 0.5, "egyseg": "csokor", "kategoria": "zoldseg"},
+        {"nev": "olívaolaj", "menny": 2, "egyseg": "ek", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Főzd meg a hajdinát kétszeres mennyiségű sós vízben (ha nincs meal prepből).", "perc": 12},
+        {"szoveg": "A céklát meal prepből használd, vagy kockázva süsd 200 °C-on.", "perc": 30},
+        {"szoveg": "Vágd vékonyra a hagymát, morzsold fel a makrélát."},
+        {"szoveg": "Tálban: hajdina, cékla, makréla, savanyú káposzta, hagyma, petrezselyem, olívaolaj."}
+      ],
+      "link": null
+    },
+    {
+      "id": "hetfo-ebed-2", "nap": "hetfo", "etkezes": "ebed", "ajanlott": false,
+      "nev": "Csirkés-brokkolis teljes kiőrlésű tészta gyömbéres szójaszósszal", "konyha": "ázsiai", "feherjeforras": "csirke",
+      "ido_perc": 25, "nehezseg": "kozepes", "adag": 2,
+      "feherje_g": 38, "kcal": 680, "rost_g": 9, "nova": 3, "nutriscore_becsult": "B",
+      "fermentalt": true, "maradek_holnapra": true, "futonapra": true, "koltseg_ft": 2600,
+      "miert": "Sovány fehérje + keresztesvirágú zöldség, a szójaszósz fermentált fűszer.",
+      "novenyek": ["teljes kiőrlésű tészta", "brokkoli", "gyömbér", "fokhagyma", "sárgarépa"],
+      "alapanyagok": [
+        {"nev": "csirkemell", "menny": 300, "egyseg": "g", "kategoria": "feherje"},
+        {"nev": "teljes kiőrlésű spagetti", "menny": 160, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "brokkoli", "menny": 1, "egyseg": "fej", "kategoria": "zoldseg"},
+        {"nev": "sárgarépa", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "gyömbér (friss)", "menny": 20, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "fokhagyma", "menny": 2, "egyseg": "gerezd", "kategoria": "zoldseg"},
+        {"nev": "szójaszósz (natúr főzésű)", "menny": 2, "egyseg": "ek", "kategoria": "egyeb"},
+        {"nev": "olívaolaj", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Tedd fel főni a tésztát sós vízben.", "perc": 10},
+        {"szoveg": "Csíkozd a csirkét, pirítsd meg az olajon.", "perc": 6},
+        {"szoveg": "Add hozzá a rózsáira szedett brokkolit, a gyufaszál répát, a reszelt gyömbért és fokhagymát.", "perc": 4},
+        {"szoveg": "Keverd össze a lecsöpögtetett tésztával és a szójaszósszal."}
+      ],
+      "link": null
+    },
+    {
+      "id": "hetfo-ebed-3", "nap": "hetfo", "etkezes": "ebed", "ajanlott": false,
+      "nev": "Miso-s tofus-edamame tál barna rizzsel", "konyha": "japán", "feherjeforras": "tofu, hüvelyes",
+      "ido_perc": 20, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 29, "kcal": 640, "rost_g": 12, "nova": 3, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": false, "koltseg_ft": 2000,
+      "miert": "Növényi fehérje és izoflavonok; a miso fermentált, a sok zöldség polifenolt ad.",
+      "novenyek": ["tofu", "edamame", "barna rizs", "uborka", "sárgarépa", "lilakáposzta"],
+      "alapanyagok": [
+        {"nev": "tofu (natúr)", "menny": 300, "egyseg": "g", "kategoria": "feherje"},
+        {"nev": "edamame (fagyasztott)", "menny": 150, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "barna rizs", "menny": 140, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "miso paszta", "menny": 1, "egyseg": "ek", "kategoria": "tejtermek"},
+        {"nev": "uborka", "menny": 0.5, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "sárgarépa", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "lilakáposzta", "menny": 150, "egyseg": "g", "kategoria": "zoldseg"}
+      ],
+      "lepesek": [
+        {"szoveg": "Főzd meg a rizst (vagy használd a meal prepet).", "perc": 25},
+        {"szoveg": "Kockázd a tofut, és pirítsd aranybarnára.", "perc": 8},
+        {"szoveg": "Keverd ki a misót 2 ek langyos vízzel és 1 tk olajjal öntetnek."},
+        {"szoveg": "Tálban: rizs, tofu, felengedett edamame, gyalult zöldségek, öntet."}
+      ],
+      "link": null
+    },
+    {
+      "id": "hetfo-vacsora-1", "nap": "hetfo", "etkezes": "vacsora", "ajanlott": true,
+      "nev": "Babgulyás pulykával, sok zöldséggel", "konyha": "magyar újragondolva", "feherjeforras": "pulyka, hüvelyes",
+      "ido_perc": 40, "nehezseg": "kozepes", "adag": 2,
+      "feherje_g": 34, "kcal": 660, "rost_g": 15, "nova": 1, "nutriscore_becsult": "A",
+      "fermentalt": false, "maradek_holnapra": true, "futonapra": false, "koltseg_ft": 2200,
+      "miert": "A bab rostja és a sovány pulyka együtt laktat, a füstölt paprika kolbász nélkül adja a klasszikus ízt.",
+      "novenyek": ["vörösbab", "sárgarépa", "petrezselyemgyökér", "zeller", "vöröshagyma", "paprika", "paradicsom"],
+      "alapanyagok": [
+        {"nev": "pulykacomb (filé)", "menny": 300, "egyseg": "g", "kategoria": "feherje"},
+        {"nev": "vörösbab (konzerv)", "menny": 400, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "sárgarépa", "menny": 2, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "petrezselyemgyökér", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "zeller (gumó)", "menny": 100, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "vöröshagyma", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "kaliforniai paprika", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "paradicsom", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "füstölt pirospaprika", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"},
+        {"nev": "olívaolaj", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Dinszteld meg a hagymát az olajon, add hozzá a kockázott pulykát, és pirítsd fehéredésig.", "perc": 6},
+        {"szoveg": "Húzd le a tűzről, szórd meg a pirospaprikával, öntsd fel 1,2 l vízzel.", "perc": null},
+        {"szoveg": "Add hozzá a kockázott gyökérzöldségeket, sózd, és főzd fedő alatt.", "perc": 20},
+        {"szoveg": "Tedd bele a paprikát, paradicsomot és a leöblített babot, főzd még.", "perc": 10}
+      ],
+      "link": {"url": "https://www.daringgourmet.com/babgulyas-hungarian-bean-goulash/", "cim": "The Daring Gourmet – Hungarian Bean Goulash (Babgulyás)"}
+    },
+    {
+      "id": "hetfo-vacsora-2", "nap": "hetfo", "etkezes": "vacsora", "ajanlott": false,
+      "nev": "Sütőben sült hekk krumplival és kefires uborkasalátával", "konyha": "magyar újragondolva", "feherjeforras": "hal",
+      "ido_perc": 35, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 33, "kcal": 610, "rost_g": 7, "nova": 1, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": true, "koltseg_ft": 2500,
+      "miert": "Sovány fehér hal bő olaj nélkül, a kefir élőflórát ad, a héjas krumpli káliumot.",
+      "novenyek": ["burgonya", "uborka", "kapor", "citrom", "fokhagyma"],
+      "alapanyagok": [
+        {"nev": "hekk (tisztított, fagyasztott)", "menny": 400, "egyseg": "g", "kategoria": "feherje"},
+        {"nev": "burgonya", "menny": 600, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "uborka", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "kefir", "menny": 200, "egyseg": "ml", "kategoria": "tejtermek"},
+        {"nev": "kapor (friss)", "menny": 0.5, "egyseg": "csokor", "kategoria": "zoldseg"},
+        {"nev": "citrom", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "fokhagyma", "menny": 1, "egyseg": "gerezd", "kategoria": "zoldseg"},
+        {"nev": "olívaolaj", "menny": 2, "egyseg": "ek", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Cikkezd a krumplit, forgasd olajba, sózd, és süsd 220 °C-on.", "perc": 15},
+        {"szoveg": "Tedd mellé a citromos-fokhagymás hekket, és süsd együtt tovább.", "perc": 15},
+        {"szoveg": "Közben gyalulj uborkát, keverd kefirrel, kaporral, sóval."}
+      ],
+      "link": null
+    },
+    {
+      "id": "hetfo-vacsora-3", "nap": "hetfo", "etkezes": "vacsora", "ajanlott": false,
+      "nev": "Gombás-spenótos omlett misolevessel", "konyha": "japán ihletésű", "feherjeforras": "tojás",
+      "ido_perc": 15, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 28, "kcal": 480, "rost_g": 6, "nova": 1, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": false, "koltseg_ft": 1500,
+      "miert": "Gyors, könnyű vacsora: a gomba B-vitamint és béta-glükánt, a miso élőflórát ad.",
+      "novenyek": ["gomba", "spenót", "újhagyma", "szója"],
+      "alapanyagok": [
+        {"nev": "tojás", "menny": 6, "egyseg": "db", "kategoria": "feherje"},
+        {"nev": "csiperkegomba", "menny": 250, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "bébispenót", "menny": 100, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "miso paszta", "menny": 2, "egyseg": "ek", "kategoria": "tejtermek"},
+        {"nev": "újhagyma", "menny": 2, "egyseg": "szál", "kategoria": "zoldseg"},
+        {"nev": "kovászos teljes kiőrlésű rozskenyér", "menny": 2, "egyseg": "szelet", "kategoria": "gabona"}
+      ],
+      "lepesek": [
+        {"szoveg": "Pirítsd meg a szeletelt gombát kevés olajon.", "perc": 5},
+        {"szoveg": "Add hozzá a spenótot, majd öntsd rá a felvert tojást, és süsd készre.", "perc": 4},
+        {"szoveg": "A misót keverd 600 ml forró (nem forrásban lévő) vízbe, szórd meg újhagymával."}
+      ],
+      "link": null
+    },
+    {
+      "id": "kedd-reggeli-1", "nap": "kedd", "etkezes": "reggeli", "ajanlott": true,
+      "nev": "Túrós-kapros rozskenyér retekkel és főtt tojással", "konyha": "skandináv", "feherjeforras": "tejtermék, tojás",
+      "ido_perc": 8, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 31, "kcal": 510, "rost_g": 7, "nova": 3, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": false, "koltseg_ft": 1100,
+      "miert": "A túró kazeinje lassan szívódik fel, a meal prep tojással 8 perc alatt kész.",
+      "novenyek": ["rozs", "retek", "kapor", "lenmag"],
+      "alapanyagok": [
+        {"nev": "félzsíros túró", "menny": 250, "egyseg": "g", "kategoria": "tejtermek"},
+        {"nev": "kovászos teljes kiőrlésű rozskenyér", "menny": 4, "egyseg": "szelet", "kategoria": "gabona"},
+        {"nev": "tojás", "menny": 2, "egyseg": "db", "kategoria": "feherje"},
+        {"nev": "retek", "menny": 6, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "kapor (friss)", "menny": 0.5, "egyseg": "csokor", "kategoria": "zoldseg"},
+        {"nev": "lenmag", "menny": 10, "egyseg": "g", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Keverd ki a túrót a kaporral, sóval, borssal és egy kevés vízzel krémesre."},
+        {"szoveg": "Kend a kenyérre, rakd rá a retket és a felszeletelt meal prep tojást."},
+        {"szoveg": "Szórd meg lenmaggal."}
+      ],
+      "link": null
+    },
+    {
+      "id": "kedd-ebed-1", "nap": "kedd", "etkezes": "ebed", "ajanlott": true,
+      "nev": "Maradék makrélás hajdinatál rukkolával", "konyha": "magyar újragondolva", "feherjeforras": "hal",
+      "ido_perc": 5, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 33, "kcal": 690, "rost_g": 10, "nova": 3, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": true, "koltseg_ft": 600,
+      "miert": "A hétfői maradék friss rukkolával – 5 perc, nulla pazarlás.",
+      "novenyek": ["rukkola", "tökmag"],
+      "alapanyagok": [
+        {"nev": "rukkola", "menny": 60, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "tökmag", "menny": 20, "egyseg": "g", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Vedd ki a hétfői maradékot a hűtőből 10 perccel előbb.", "perc": 10},
+        {"szoveg": "Keverd hozzá a rukkolát, szórd meg pirított tökmaggal."},
+        {"szoveg": "Locsold meg egy kevés olívaolajjal és citromlével."}
+      ],
+      "link": null
+    },
+    {
+      "id": "kedd-vacsora-1", "nap": "kedd", "etkezes": "vacsora", "ajanlott": true,
+      "nev": "Teriyaki pisztráng barna rizzsel és pak choival", "konyha": "japán", "feherjeforras": "hal",
+      "ido_perc": 25, "nehezseg": "kozepes", "adag": 2,
+      "feherje_g": 35, "kcal": 640, "rost_g": 6, "nova": 3, "nutriscore_becsult": "B",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": true, "koltseg_ft": 3600,
+      "miert": "A pisztráng a lazac olcsóbb omega-3-alternatívája; a házi teriyaki cukor nélkül készül.",
+      "novenyek": ["barna rizs", "pak choi", "gyömbér", "fokhagyma", "szezám"],
+      "alapanyagok": [
+        {"nev": "pisztrángfilé", "menny": 300, "egyseg": "g", "kategoria": "feherje"},
+        {"nev": "barna rizs (főtt)", "menny": 300, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "pak choi", "menny": 2, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "gyömbér (friss)", "menny": 15, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "fokhagyma", "menny": 1, "egyseg": "gerezd", "kategoria": "zoldseg"},
+        {"nev": "szójaszósz (natúr főzésű)", "menny": 2, "egyseg": "ek", "kategoria": "egyeb"},
+        {"nev": "szezámmag", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Keverd össze a szójaszószt, a reszelt gyömbért, fokhagymát és 2 ek vizet.", "perc": null},
+        {"szoveg": "Süsd a pisztrángot bőrös oldalával lefelé, majd fordítsd meg.", "perc": 6},
+        {"szoveg": "Öntsd rá a szószt, és párold vele a félbevágott pak choit.", "perc": 3},
+        {"szoveg": "Tálald a melegített rizzsel, szezámmaggal."}
+      ],
+      "link": null
+    }
+  ],
+  "tartalekok": [
+    {
+      "id": "tartalek-reggeli-1", "etkezes": "reggeli",
+      "nev": "Kefires chiapuding almával és fahéjjal", "konyha": "skandináv", "feherjeforras": "tejtermék",
+      "ido_perc": 5, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 25, "kcal": 480, "rost_g": 13, "nova": 1, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": false, "futonapra": false, "koltseg_ft": 1000,
+      "miert": "Este 5 perc, reggel kész; a chia rostja és omega-3-ja lassítja a felszívódást.",
+      "novenyek": ["chia", "alma", "fahéj", "mandula"],
+      "alapanyagok": [
+        {"nev": "kefir", "menny": 400, "egyseg": "ml", "kategoria": "tejtermek"},
+        {"nev": "chiamag", "menny": 50, "egyseg": "g", "kategoria": "egyeb"},
+        {"nev": "skyr (natúr)", "menny": 150, "egyseg": "g", "kategoria": "tejtermek"},
+        {"nev": "alma", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "mandula", "menny": 20, "egyseg": "g", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Keverd össze a kefirt, a skyrt és a chiát, majd 10 perc múlva keverd át újra.", "perc": 10},
+        {"szoveg": "Tedd hűtőbe éjszakára."},
+        {"szoveg": "Reggel reszelt almával, fahéjjal, durvára vágott mandulával tálald."}
+      ],
+      "link": null
+    },
+    {
+      "id": "tartalek-ebed-1", "etkezes": "ebed",
+      "nev": "Vöröslencse-dhal spenóttal és joghurttal", "konyha": "indiai", "feherjeforras": "hüvelyes, tejtermék",
+      "ido_perc": 25, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 27, "kcal": 620, "rost_g": 15, "nova": 1, "nutriscore_becsult": "A",
+      "fermentalt": true, "maradek_holnapra": true, "futonapra": true, "koltseg_ft": 1200,
+      "miert": "Olcsó, rostdús növényi fehérje; a kurkuma és a gyömbér polifenolokat ad.",
+      "novenyek": ["vöröslencse", "spenót", "vöröshagyma", "gyömbér", "kurkuma", "paradicsom"],
+      "alapanyagok": [
+        {"nev": "vöröslencse", "menny": 200, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "bébispenót", "menny": 150, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "vöröshagyma", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "gyömbér (friss)", "menny": 15, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "paradicsom (darabolt, konzerv)", "menny": 400, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "görög joghurt", "menny": 200, "egyseg": "g", "kategoria": "tejtermek"}
+      ],
+      "lepesek": [
+        {"szoveg": "Párold meg a hagymát és a gyömbért a kurkumával.", "perc": 4},
+        {"szoveg": "Add hozzá a lencsét, a paradicsomot és 500 ml vizet, főzd puhára.", "perc": 15},
+        {"szoveg": "Keverd bele a spenótot, és joghurttal tálald."}
+      ],
+      "link": null
+    },
+    {
+      "id": "tartalek-vacsora-1", "etkezes": "vacsora",
+      "nev": "Szardíniás-paradicsomos teljes kiőrlésű tészta", "konyha": "mediterrán", "feherjeforras": "hal",
+      "ido_perc": 20, "nehezseg": "konnyu", "adag": 2,
+      "feherje_g": 30, "kcal": 650, "rost_g": 9, "nova": 3, "nutriscore_becsult": "B",
+      "fermentalt": false, "maradek_holnapra": false, "futonapra": true, "koltseg_ft": 1500,
+      "miert": "A szardínia az egyik legolcsóbb omega-3- és D-vitamin-forrás, szálkástul kalciumot is ad.",
+      "novenyek": ["teljes kiőrlésű tészta", "paradicsom", "fokhagyma", "petrezselyem", "kapribogyó"],
+      "alapanyagok": [
+        {"nev": "szardínia (olívaolajos konzerv)", "menny": 2, "egyseg": "doboz", "kategoria": "feherje"},
+        {"nev": "teljes kiőrlésű spagetti", "menny": 160, "egyseg": "g", "kategoria": "gabona"},
+        {"nev": "paradicsom (darabolt, konzerv)", "menny": 400, "egyseg": "g", "kategoria": "zoldseg"},
+        {"nev": "fokhagyma", "menny": 2, "egyseg": "gerezd", "kategoria": "zoldseg"},
+        {"nev": "petrezselyem (friss)", "menny": 0.5, "egyseg": "csokor", "kategoria": "zoldseg"}
+      ],
+      "lepesek": [
+        {"szoveg": "Főzd meg a tésztát.", "perc": 10},
+        {"szoveg": "A szardínia olaján pirítsd a fokhagymát, add hozzá a paradicsomot, és forrald össze.", "perc": 8},
+        {"szoveg": "Törd bele a szardíniát, keverd össze a tésztával és a petrezselyemmel."}
+      ],
+      "link": null
+    }
+  ],
+  "snackek": [
+    {
+      "id": "snack-1", "nev": "Pirított füstölt paprikás csicseriborsó",
+      "ido_perc": 35, "eltarthatosag": "5 nap", "tarolas": "Légmentes dobozban, szobahőmérsékleten",
+      "adag": 5, "feherje_g": 8, "kcal": 170, "koltseg_ft": 700,
+      "miert": "Ropogós, sós – kiváltja a chipset, közben rostot és fehérjét ad.",
+      "novenyek": ["csicseriborsó", "füstölt paprika", "kömény"],
+      "alapanyagok": [
+        {"nev": "csicseriborsó (konzerv)", "menny": 2, "egyseg": "doboz", "kategoria": "gabona"},
+        {"nev": "olívaolaj", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"},
+        {"nev": "füstölt pirospaprika", "menny": 1, "egyseg": "tk", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Öblítsd le és szárítsd meg alaposan a csicseriborsót konyharuhán."},
+        {"szoveg": "Forgasd össze az olajjal, sóval, fűszerekkel."},
+        {"szoveg": "Süsd 200 °C-on, félidőben rázd át.", "perc": 30},
+        {"szoveg": "Hagyd teljesen kihűlni, csak utána tedd dobozba.", "perc": 15}
+      ],
+      "link": null
+    },
+    {
+      "id": "snack-2", "nev": "Kefir dióval és fahéjjal",
+      "ido_perc": 2, "eltarthatosag": "frissen", "tarolas": "Hűtőben (a kefir)",
+      "adag": 1, "feherje_g": 9, "kcal": 210, "koltseg_ft": 350,
+      "miert": "Fermentált tejtermék + egészséges zsír: hamar elveszi az édességvágyat.",
+      "novenyek": ["dió", "fahéj"],
+      "alapanyagok": [
+        {"nev": "kefir", "menny": 250, "egyseg": "ml", "kategoria": "tejtermek"},
+        {"nev": "dió", "menny": 15, "egyseg": "g", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Öntsd pohárba a kefirt."},
+        {"szoveg": "Szórd meg durvára tört dióval és fahéjjal."},
+        {"szoveg": "Kanállal, lassan edd – így jobban laktat."}
+      ],
+      "link": null
+    },
+    {
+      "id": "snack-3", "nev": "Főtt tojás uborkával és szezámsóval",
+      "ido_perc": 10, "eltarthatosag": "5 nap", "tarolas": "Héjában, hűtőben",
+      "adag": 4, "feherje_g": 13, "kcal": 170, "koltseg_ft": 600,
+      "miert": "Két tojás 13 g fehérjével – a meal prepből előre kész, bármikor kéznél van.",
+      "novenyek": ["uborka", "szezám"],
+      "alapanyagok": [
+        {"nev": "tojás", "menny": 8, "egyseg": "db", "kategoria": "feherje"},
+        {"nev": "uborka", "menny": 1, "egyseg": "db", "kategoria": "zoldseg"},
+        {"nev": "szezámmag", "menny": 1, "egyseg": "ek", "kategoria": "egyeb"}
+      ],
+      "lepesek": [
+        {"szoveg": "Főzd keményre a tojásokat.", "perc": 9},
+        {"szoveg": "Hűtsd le jeges vízben, így könnyen hámozható.", "perc": 3},
+        {"szoveg": "Uborkaszeletekkel, pirított szezám és só keverékével edd."}
+      ],
+      "link": null
+    }
+  ]
+}

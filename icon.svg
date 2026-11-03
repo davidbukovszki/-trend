@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#2f6b4f"/>
+  <!-- tál -->
+  <path d="M120 262h272c0 78-61 140-136 140S120 340 120 262z" fill="#f5f3ee"/>
+  <rect x="104" y="250" width="304" height="20" rx="10" fill="#f5f3ee"/>
+  <!-- levelek -->
+  <path d="M256 246c-6-58 22-104 86-118-2 66-34 106-86 118z" fill="#9fd4b2"/>
+  <path d="M256 246c-34-36-40-80-14-118 34 30 40 76 14 118z" fill="#cdeed8"/>
+  <path d="M250 246c-46-8-80-36-88-82 50-2 82 30 88 82z" fill="#7cc298"/>
+  <!-- csillag (ajánlott) -->
+  <path d="M256 300l11 22 24 4-17 17 4 24-22-11-22 11 4-24-17-17 24-4z" fill="#e3a41b"/>
+</svg>
